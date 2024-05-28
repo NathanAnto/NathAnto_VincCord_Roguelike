@@ -29,7 +29,7 @@ class Mob(p: Vector2) extends Entity {
     g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
 
     if(collider.overlaps(player.collider)) {
-      println("collided with player")
+      println("colliing with player")
     }
   }
 }

@@ -3,6 +3,7 @@ package ch.hevs.gdx2d.medieslash
 import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
+import ch.hevs.gdx2d.medieslash.levels.LevelManager
 import ch.hevs.gdx2d.medieslash.objects.{Entity, GameObject, Mob, Player}
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
@@ -22,20 +23,22 @@ class Main extends PortableApplication(1920, 1080) {
     setTitle("Game Tester")
 
     // Create player
-    player = new Player(new Vector2(200, 540))
-    val walkRightAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_right.png", 4)
-    val walkLeftAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_left.png", 4)
+//    player = new Player(new Vector2(200, 540))
+//    val walkRightAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_right.png", 4)
+//    val walkLeftAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_left.png", 4)
+//
+//    player.animations.addOne("right", walkRightAnim)
+//    player.animations.addOne("left", walkLeftAnim)
+//
+//    player.currentAnimation = player.animations("right")
+//
+//    player.tag = "player"
+//
+//    // Create mob
+//    mob = new Mob(new Vector2(700, 500))
+//    mob.tag = "mob"
 
-    player.animations.addOne("right", walkRightAnim)
-    player.animations.addOne("left", walkLeftAnim)
-
-    player.currentAnimation = player.animations("right")
-
-    player.tag = "player"
-
-    // Create mob
-    mob = new Mob(new Vector2(700, 500))
-    mob.tag = "mob"
+    var levels = LevelManager.generateLevels(3, 3, 5, 5)
   }
 
   /**
