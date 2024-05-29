@@ -17,6 +17,8 @@ class Player(p: Vector2) extends Entity {
   override var maxHp: Int = 20
   override var hp: Int = maxHp
 
+  tag = "player"
+
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
 
@@ -25,10 +27,10 @@ class Player(p: Vector2) extends Entity {
 
     g.draw(
       currentAnimation.playAnimation(),
-      position.x - currentAnimation.SPRITE_WIDTH / 2,
-      position.y - currentAnimation.SPRITE_HEIGHT / 2
+      (position.x) - currentAnimation.SPRITE_WIDTH / 2,
+      (position.y) - currentAnimation.SPRITE_HEIGHT / 2
     )
-    //    g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
+    //      g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
   }
 
   //  override def takeDamage(dmg: Int): Unit

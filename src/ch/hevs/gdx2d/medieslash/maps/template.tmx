@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="11" height="9" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="8">
+ <tileset firstgid="1" source="dungeon.tsx"/>
+ <layer id="1" name="Ground" width="11" height="9" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJxbzsDAsAINl2ERWwnE24F4BxF4Jw3VAt2WQIxaoLoFg8G9x4H4BBoGuu0AuthJIAYAwDZH4Q==
+  </data>
+ </layer>
+ <layer id="3" name="Objects" width="11" height="9" locked="1">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAO+IVD/BWVzKcmALmVGHfdJNHcm2ToQQYANCwGVA==
+  </data>
+ </layer>
+</map>

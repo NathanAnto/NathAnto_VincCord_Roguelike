@@ -18,6 +18,8 @@ class Mob(p: Vector2) extends Entity {
   override var maxHp = 20
   override var hp = maxHp
 
+  tag = "mob"
+
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
 
   override def draw(g: GdxGraphics): Unit = {

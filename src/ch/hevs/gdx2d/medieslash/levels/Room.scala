@@ -1,12 +1,19 @@
 package ch.hevs.gdx2d.medieslash.levels
 
+import ch.hevs.gdx2d.medieslash.objects.Mob
+import com.badlogic.gdx.maps.tiled.{TiledMap, TiledMapTileLayer}
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
 class Room(val x: Int, val y: Int) {
   var neighbours: Set[Room] = Set()
+  var mobs: ArrayBuffer[Mob] = ArrayBuffer()
+  var map: TiledMap = _
 
   var isTraversable: Boolean = false
+  var isBossRoom: Boolean = false
 
   override def toString: String = s"Cell($x,$y)"
 
@@ -24,6 +31,10 @@ class Room(val x: Int, val y: Int) {
     for(d <- directions) {
       if(d != null) neighbours += d
     }
+  }
+
+  def setMap(map: TiledMap): Unit = {
+    this.map = map
   }
 
   /**
