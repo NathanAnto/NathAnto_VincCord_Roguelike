@@ -14,8 +14,7 @@ object LevelManager {
 
   // TODO: Make usable maps
   var possibleRooms: Array[TiledMap] = Array(
-//    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/desert.tmx"),
-    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/template.tmx"),
+    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/template.tmx")
   )
 
   def getCurrentLevel: Level = levels(currentLevelIndex)
@@ -38,15 +37,20 @@ object LevelManager {
       val startRoom = level.getRoom(level.width / 2, level.height / 2)
       startRoom.isTraversable = true
       startRoom.setMap(
-        possibleRooms(Random.between(0, possibleRooms.size))
+        possibleRooms(Random.between(0, possibleRooms.length))
       )
+      for(n <- startRoom.neighbours) {
+        startRoom.createDoors(n, level)
+      }
 
       level.currentRoom = startRoom
 
+      println(roomCount)
+
 //      println(s"New room in pos ${startRoom.x},${startRoom.y}")
       primsFrontier(
-        level.getRoom(startRoom.x, startRoom.y),
-        visited = mutable.Set(),
+        startRoom,
+        visited = mutable.Set(startRoom),
         level, roomCount
       )
 
@@ -63,14 +67,17 @@ object LevelManager {
         level.frontiers += l
       }
     }
+
     val nextRoom: Room = level.getRandomFrontier
     if(nextRoom == null || visited.size >= roomCount) return
 
 //    println(s"New room in pos ${nextRoom.x},${nextRoom.y}")
     visited += nextRoom
     nextRoom.setMap(
-      possibleRooms(Random.between(0, possibleRooms.size))
+      possibleRooms(Random.between(0, possibleRooms.length))
     )
+
+    nextRoom.isTraversable = true
 
     // Set last generated room to boss room
     if(visited.size >= roomCount) {
@@ -81,6 +88,8 @@ object LevelManager {
 
     // Find a neighbour that has already been visited
     for(n <- nextRoom.neighbours) {
+      nextRoom.createDoors(n, level)
+
       if(visited.contains(n)) {
         primsFrontier(nextRoom, visited, level, roomCount)
         return

@@ -10,7 +10,7 @@ import scala.collection.mutable
 
 class Mob(p: Vector2) extends Entity {
   override var position: Vector2 = p
-  override var collider: Circle = new Circle(p.x, p.y, 50)
+  override var collider: Circle = new Circle(p.x, p.y, 30)
   override var sprites: Spritesheet = _
   override var animations: mutable.HashMap[String, Animation] = mutable.HashMap()
   override var currentAnimation: Animation = _
