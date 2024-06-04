@@ -13,46 +13,54 @@ object LevelManager {
   private val MIN_ROOM_COUNT: Int = 4
 
   // TODO: Make usable maps
-  var possibleRooms: Array[TiledMap] = Array(
-    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/template.tmx")
+  private var possibleRooms: Array[TiledMap] = Array(
+    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room1.tmx")
   )
 
   def getCurrentLevel: Level = levels(currentLevelIndex)
 
+  def startLevel(): Unit = {
+
+    MapManager.setNewMap(getCurrentLevel.currentRoom.map)
+    println(s"Starting Level ${currentLevelIndex + 1}")
+    println(s"Rooms: ${getCurrentLevel.roomCount}")
+  }
+
   /**
    * Generates n levels
+   *
    * @param w width of a level
    * @param h height of a level
    * @param n number of levels
    * @param m max number of rooms in a level
    */
   def generateLevels(w: Int, h: Int, n: Int, m: Int): Unit = {
-    for(i <- 0 until n) {
-      val level = new Level(i+1, w, h)
+    for (i <- 0 until n) {
+      val level = new Level(i + 1, w, h)
       level.createRooms()
+      println(s"Level ${level.id}")
 
-      val roomCount: Int = clamp(MIN_ROOM_COUNT + i, 0, m)
-//      println(s"level ${level.id} has $roomCount rooms")
+      level.roomCount = clamp(MIN_ROOM_COUNT + i, 0, m)
 
       val startRoom = level.getRoom(level.width / 2, level.height / 2)
       startRoom.isTraversable = true
       startRoom.setMap(
         possibleRooms(Random.between(0, possibleRooms.length))
       )
-      for(n <- startRoom.neighbours) {
-        startRoom.createDoors(n, level)
-      }
 
       level.currentRoom = startRoom
 
-      println(roomCount)
-
-//      println(s"New room in pos ${startRoom.x},${startRoom.y}")
       primsFrontier(
         startRoom,
         visited = mutable.Set(startRoom),
-        level, roomCount
+        level, level.roomCount
       )
+
+      for (r <- level.getRooms) {
+        for(n <- r.neighbours) {
+          r.createDoors(n, level)
+        }
+      }
 
       levels.addOne(level)
     }
@@ -62,35 +70,34 @@ object LevelManager {
     visited += location
 
     // Get all neighbours that haven't been visited
-    for(l <- location.neighbours){
-      if(!visited.contains(l)) {
+    for (l <- location.neighbours) {
+      if (!visited.contains(l)) {
         level.frontiers += l
       }
     }
 
     val nextRoom: Room = level.getRandomFrontier
-    if(nextRoom == null || visited.size >= roomCount) return
+    if (nextRoom == null) return
 
-//    println(s"New room in pos ${nextRoom.x},${nextRoom.y}")
     visited += nextRoom
-    nextRoom.setMap(
-      possibleRooms(Random.between(0, possibleRooms.length))
-    )
 
-    nextRoom.isTraversable = true
+    if (visited.size <= roomCount) {
+      nextRoom.isTraversable = true
 
-    // Set last generated room to boss room
-    if(visited.size >= roomCount) {
-      nextRoom.isBossRoom = true
+      nextRoom.setMap(
+        possibleRooms(Random.between(0, possibleRooms.length))
+      )
+
+      // Set last generated room to boss room
+      if (visited.size == roomCount) {
+        nextRoom.isBossRoom = true
+      }
     }
 
-//    println(s"New room in pos ${nextRoom.x},${nextRoom.y}")
-
     // Find a neighbour that has already been visited
-    for(n <- nextRoom.neighbours) {
-      nextRoom.createDoors(n, level)
+    for (n <- nextRoom.neighbours) {
 
-      if(visited.contains(n)) {
+      if (visited.contains(n)) {
         primsFrontier(nextRoom, visited, level, roomCount)
         return
       }
@@ -98,9 +105,23 @@ object LevelManager {
   }
 
   def levelFinished(): Unit = {
-    if(levels(currentLevelIndex).bossDefeated) {
+    if (getCurrentLevel.getRooms.count(r => r.roomCleared) == LevelManager.getCurrentLevel.roomCount) {
       currentLevelIndex += 1
+      if(currentLevelIndex == levels.length) {
+        println("GAME FINISHED")
+        // TODO: End game
+        return
+      }
+      startLevel()
+    } else {
+      for((s, d) <- getCurrentLevel.currentRoom.doors) {
+        d.active = true
+      }
     }
+
+    //    if(levels(currentLevelIndex).bossDefeated) {
+    //      currentLevelIndex += 1
+    //    }
   }
 
   private def clamp(value: Int, min: Int, max: Int): Int = Math.max(min, Math.min(max, value))

@@ -37,18 +37,6 @@ class Player(p: Vector2) extends Entity {
       (position.x) - currentAnimation.SPRITE_WIDTH / 2,
       (position.y) - currentAnimation.SPRITE_HEIGHT / 2
     )
-
-//    if (!MapManager.isWalkable(MapManager.getTile(position, 0, 0))) {
-//      speed.x = 0
-//      speed.y = 0
-//    }
-
-    if (MapManager.isDoor(MapManager.getTile(position, 0, 0))) {
-      println("Walking into door")
-//      if(RoomManager.roomCleared()) {
-//        RoomManager.getNextRoom
-//      }
-    }
   }
 
   //  override def takeDamage(dmg: Int): Unit

@@ -5,10 +5,11 @@ import com.badlogic.gdx.maps.tiled.{TiledMap, TmxMapLoader}
 import scala.util.Random
 
 class Level(val id: Int, val width: Int, val height: Int) {
-  var rooms: Set[Room] = Set()
+  private var rooms: Set[Room] = Set()
   var currentRoom: Room = _
 
   var frontiers: Set[Room] = Set()
+  var roomCount: Int = 0
   var bossDefeated: Boolean = false
 
   def createRooms(): Unit = {

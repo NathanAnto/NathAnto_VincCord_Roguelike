@@ -16,7 +16,6 @@ object MapManager {
 
   var doorLayers: mutable.HashMap[String, TiledMapTileLayer] = new mutable.HashMap[String, TiledMapTileLayer]
 
-
   /**
    * exemple : getTile(myPosition,0,1) get the tile over myPosition
    *
@@ -98,10 +97,11 @@ object MapManager {
       layer.setVisible(false)
     }
 
-    for(r <- getCurrentLevel.rooms) {
-      r.findTraversableNeighbours(getCurrentLevel)
-    }
+    val currentRoom = LevelManager.getCurrentLevel.currentRoom
+    currentRoom.width = tiledLayer.getTileWidth * tiledLayer.getWidth
+    currentRoom.height = tiledLayer.getTileHeight * tiledLayer.getHeight
 
+    LevelManager.getCurrentLevel.currentRoom.showTraversableDoors(getCurrentLevel)
     RoomManager.getDoors()
   }
 

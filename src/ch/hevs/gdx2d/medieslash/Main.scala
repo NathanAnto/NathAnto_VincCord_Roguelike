@@ -24,7 +24,7 @@ class Main extends PortableApplication(1920, 1080) {
     setTitle("MedieSlash")
 
     // Create player
-    player = new Player(new Vector2(500, 540))
+    player = new Player(new Vector2(500, 500))
     val walkRightAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_right.png", 4)
     val walkLeftAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_left.png", 4)
 
@@ -38,7 +38,7 @@ class Main extends PortableApplication(1920, 1080) {
       n = 5, m = 9
     )
 
-    MapManager.setNewMap(LevelManager.getCurrentLevel.currentRoom.map)
+    LevelManager.startLevel()
   }
 
   /**
@@ -54,8 +54,13 @@ class Main extends PortableApplication(1920, 1080) {
     g.moveCamera(player.position.x, player.position.y, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
     MapManager.render(g)
 
+//    println(LevelManager.getCurrentLevel.currentRoom.mobs.mkString(","))
+
     for (obj <- GameObject.getGameobjects().toArray) {
       obj match {
+        case mob: Mob =>
+          if(LevelManager.getCurrentLevel.currentRoom.mobs.contains(mob))
+            mob.draw(g)
         case entity: DrawableObject =>
           entity.draw(g)
         case _ =>
@@ -67,7 +72,7 @@ class Main extends PortableApplication(1920, 1080) {
     g.drawSchoolLogo()
   }
 
-  private val SPEED = 3
+  private val SPEED = 5
 
   override def onKeyDown(keycode: Int): Unit = {
     super.onKeyDown(keycode)

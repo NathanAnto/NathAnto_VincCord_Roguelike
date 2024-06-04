@@ -1,4 +1,8 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "template.tmx",
     "expandedProjectPaths": [
     ],
@@ -52,10 +56,10 @@
                 7
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 522.6666666666666,
-                "y": 660.3333333333333
+                "x": 962.6666666666665,
+                "y": 658.3333333333333
             }
         },
         "template.tmx#dungeon": {
