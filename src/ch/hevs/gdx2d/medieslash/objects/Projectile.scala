@@ -8,9 +8,52 @@ import com.badlogic.gdx.math.{Circle, Vector2}
 class Projectile(startPos: Vector2) extends Object with DrawableObject {
 
   override var position: Vector2 = startPos
-  override var collider: Circle = new Circle(startPos.x, startPos.y, 10)
+  override var collider: Circle = new Circle(startPos.x, startPos.y, 30)
+  var xSpeed: Int = 7
+  var ySpeed: Int = 7
+  var diagoSpeed: Int = (xSpeed * 1.2 * math.cos(math.Pi / 4)).toInt
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
+
+  // fonction pour partir en fonction du player
+  def move_projectil(left: Boolean, right: Boolean, up: Boolean, down: Boolean): Unit = {
+    if(left && !right && !up && !down){
+      position.x -= xSpeed
+    }
+    if(right && !left && !up && !down){
+      position.x += xSpeed
+    }
+    if(up && !right && !left && !down){
+      position.y += ySpeed
+    }
+    if(down && !right && !up && !left){
+      position.y -= ySpeed
+    }
+
+    if(up && left){
+      position.x -= diagoSpeed
+      position.y += diagoSpeed
+    }
+
+    if(up && right){
+      position.x += diagoSpeed
+      position.y += diagoSpeed
+    }
+
+    if(down && left){
+      position.x -= diagoSpeed
+      position.y -= diagoSpeed
+    }
+
+    if(down && right){
+      position.x += diagoSpeed
+      position.y -= diagoSpeed
+    }
+    if(!left && !right && !down && !up){
+      position.x += xSpeed
+    }
+  }
+
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
@@ -18,6 +61,6 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
     // TODO: Draw sprites
     g.setColor(Color.RED)
     g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN)
-    g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
+    g.drawFilledRectangle(position.x, position.y, 32, 32, 0)
   }
 }

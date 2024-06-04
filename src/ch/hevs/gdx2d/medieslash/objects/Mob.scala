@@ -14,18 +14,78 @@ class Mob(p: Vector2) extends Entity {
   override var sprites: Spritesheet = _
   override var animations: mutable.HashMap[String, Animation] = mutable.HashMap()
   override var currentAnimation: Animation = _
-
-  override var maxHp = 20
+  override var xSpeed: Int = 1
+  override var ySpeed: Int = 1
+  override var diagoSpeed: Int = (xSpeed * 2 * math.cos(math.Pi / 4)).toInt
+  tag = "mob"
+  override var maxHp = 2
   override var hp = maxHp
-
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
+  def move_fc(posX_player: Float,posY_player: Float,posX_mob: Float,posY_mob: Float): Unit = {
+    if(posX_player <= posX_mob && posY_player == posY_mob){
+      position.x -= xSpeed
+      /*if (currentAnimation != animations("left")) {
+        currentAnimation = animations("left")
+      }*/
+    }
+    if(posX_player >= posX_mob && posY_player == posY_mob){
+      position.x += xSpeed
+      /*if (currentAnimation != animations("right")) {
+        currentAnimation = animations("right")
+      }*/
+    }
+    if(posY_player >= posY_mob && posX_player == posX_mob){
+      position.y += ySpeed
+      /*if (currentAnimation != animations("up")) {
+        currentAnimation = animations("up")
+      }*/
+    }
+    if(posY_player <= posY_mob && posX_player == posX_mob){
+      position.y -= ySpeed
+      /*if (currentAnimation != animations("down")) {
+        currentAnimation = animations("down")
+      }*/
+    }
 
+    if(posX_player <= posX_mob && posY_player >= posY_mob){
+      position.x -= diagoSpeed
+      position.y += diagoSpeed
+      /*if (currentAnimation != animations("up")) {
+        currentAnimation = animations("up")
+      }*/
+    }
+
+    if(posX_player >= posX_mob && posY_player >= posY_mob){
+      position.x += diagoSpeed
+      position.y += diagoSpeed
+      /*if (currentAnimation != animations("up")) {
+        currentAnimation = animations("up")
+      }*/
+    }
+
+    if(posX_player <= posX_mob && posY_player <= posY_mob){
+      position.x -= diagoSpeed
+      position.y -= diagoSpeed
+      /*if (currentAnimation != animations("down")) {
+        currentAnimation = animations("down")
+      }*/
+    }
+
+    if(posX_player >= posX_mob && posY_player <= posY_mob){
+      position.x += diagoSpeed
+      position.y -= diagoSpeed
+      /*if (currentAnimation != animations("down")) {
+        currentAnimation = animations("down")
+      }*/
+    }
+
+  }
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
 
     // TODO: Draw sprites
-    g.setColor(Color.RED)
-    g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN)
+    g.setColor(Color.BLUE)
+    g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.RED)
     g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
 
     if(collider.overlaps(player.collider)) {

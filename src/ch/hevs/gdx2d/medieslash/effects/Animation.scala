@@ -30,4 +30,9 @@ class Animation(val nFrames: Int, val SPRITE_WIDTH: Int = 64, val SPRITE_HEIGHT:
 
     return ss.sprites(0)(currentFrame)
   }
+
+
+
+
+
 }
