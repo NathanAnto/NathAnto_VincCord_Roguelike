@@ -18,7 +18,7 @@ class Player(p: Vector2) extends Entity {
   override var ySpeed: Int = 4
   override var diagoSpeed: Int = (xSpeed * 1.2 * math.cos(math.Pi / 4)).toInt
 
-  override var maxHp: Int = 20
+  override var maxHp: Int = 10
   override var hp: Int = maxHp
   var tolerance: Double = 0.5
 
@@ -138,7 +138,6 @@ class Player(p: Vector2) extends Entity {
           if (currentAnimation != animations("left")) {
             currentAnimation = animations("left")
           }
-        } else {
         }
       }
     }
@@ -152,6 +151,7 @@ class Player(p: Vector2) extends Entity {
 
     g.setColor(Color.BLUE)
     g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN)
+
 
     g.draw(
       currentAnimation.playAnimation(),

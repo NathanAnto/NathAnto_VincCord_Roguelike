@@ -10,7 +10,7 @@ import scala.collection.mutable
 
 class Mob(p: Vector2) extends Entity {
   override var position: Vector2 = p
-  override var collider: Circle = new Circle(p.x, p.y, 50)
+  override var collider: Circle = new Circle(p.x, p.y, 35)
   override var sprites: Spritesheet = _
   override var animations: mutable.HashMap[String, Animation] = mutable.HashMap()
   override var currentAnimation: Animation = _
@@ -18,10 +18,15 @@ class Mob(p: Vector2) extends Entity {
   override var ySpeed: Int = 1
   override var diagoSpeed: Int = (xSpeed * 2 * math.cos(math.Pi / 4)).toInt
   tag = "mob"
-  override var maxHp = 2
+  override var maxHp = 1
   override var hp = maxHp
+  // type de mod
+  var mob_type: String = "zombie"
+
+
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
   def move_fc(posX_player: Float,posY_player: Float,posX_mob: Float,posY_mob: Float): Unit = {
+
     if(posX_player <= posX_mob && posY_player == posY_mob){
       position.x -= xSpeed
       /*if (currentAnimation != animations("left")) {
@@ -86,7 +91,7 @@ class Mob(p: Vector2) extends Entity {
     // TODO: Draw sprites
     g.setColor(Color.BLUE)
     g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.RED)
-    g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
+    g.drawFilledRectangle(position.x, position.y, 48, 48, 0)
 
     if(collider.overlaps(player.collider)) {
       println("collided with player")

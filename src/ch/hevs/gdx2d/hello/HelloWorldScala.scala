@@ -1,12 +1,13 @@
 package ch.hevs.gdx2d.hello
 
+import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.math.{Interpolation, Vector2}
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.desktop.{PortableApplication, Xbox}
 import ch.hevs.gdx2d.lib.utils.Logger
 import ch.hevs.gdx2d.medieslash.effects.Animation
-import ch.hevs.gdx2d.medieslash.objects.{Mob, Player, PlayerProjectile}
+import ch.hevs.gdx2d.medieslash.objects.{Mob, MobProjectile, Player, PlayerProjectile}
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.maps.tiled.{TiledMap, TiledMapRenderer, TiledMapTileLayer, TmxMapLoader}
 import com.badlogic.gdx.controllers.Controller
@@ -36,17 +37,23 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
   var player: Player = _
   var mob: Mob = _
   var mob1: Mob = _
+  var mob2: Mob = _
+  var mob3: Mob = _
+  var mob4: Mob = _
+  var mob5: Mob = _
   var proj_player: PlayerProjectile = _
+  var proj_mob4: MobProjectile = _
   var compte: Double = 0
   var compteProjectil: Int = 10
+  var compteProjectilMob: Int = 10
 
   // Controller
   var ctrl: Controller = null
   var leftSickVal = Vector2.Zero.cpy // X,Y values of the left stick (POV)
 
 
-  // Test Map
-
+  // img
+  private var imgBitmap: BitmapImage = null
 
 
   // Tiles management
@@ -83,9 +90,27 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
     // player projectile
     proj_player = new PlayerProjectile(new Vector2(player.position.x,player.position.y))
 
+
+
+
     // create mob
     mob = new Mob(new Vector2(300,300))
-    mob1 = new Mob(new Vector2(400,400))
+    mob1 = new Mob(new Vector2(500,400))
+    mob1.xSpeed = 2
+    mob1.ySpeed = 2
+    mob2 = new Mob(new Vector2(600,400))
+    mob3 = new Mob(new Vector2(400,200))
+    mob3.xSpeed = 3
+    mob3.ySpeed = 3
+    mob4 = new Mob(new Vector2(400,300))
+
+    mob5 = new Mob(new Vector2(200,200))
+
+
+    proj_mob4 = new MobProjectile(mob4,new Vector2(mob4.position.x,mob4.position.y))
+
+
+
 
 
 
@@ -98,6 +123,9 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
       ctrl = Controllers.getControllers.first
       println(s"Controllleer: $ctrl")
     }
+
+    // img lose
+    imgBitmap = new BitmapImage("data/images/loser.jpg")
 
   }
 
@@ -137,8 +165,7 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
     // Draw everything
     //g.drawFPS()
 
-    //player
-    player.draw(g)
+
 
     //player projectile
     proj_player.draw(g)
@@ -153,12 +180,38 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
       proj_move_up = move_up
     }
 
-    // mob
+
+    // mob hp
     if(mob.hp > 0){
       mob.draw(g)
     }
     if(mob1.hp > 0){
       mob1.draw(g)
+    }
+    if(mob2.hp > 10){
+      mob2.draw(g)
+    }
+    if(mob3.hp > 10){
+      mob3.draw(g)
+    }
+    if(mob4.hp > 0){
+      mob4.draw(g)
+    }
+    if(mob5.hp > 10){
+      mob5.draw(g)
+    }
+
+
+
+
+    // mob Projectile
+    proj_mob4.draw(g)
+    proj_mob4.move_proj_towards_player()
+    if(compte.toInt == compteProjectilMob){
+      compteProjectilMob += 5
+      proj_mob4.position.x = mob4.position.x
+      proj_mob4.position.y = mob4.position.y
+      proj_mob4.changeAngleAndSpeed(player.position.x,player.position.y)
     }
 
 
@@ -172,8 +225,17 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
 
     mob.move_fc(player.position.x,player.position.y,mob.position.x,mob.position.y)
     mob1.move_fc(player.position.x,player.position.y,mob1.position.x,mob1.position.y)
+    mob2.move_fc(player.position.x,player.position.y,mob2.position.x,mob2.position.y)
+    mob3.move_fc(player.position.x,player.position.y,mob3.position.x,mob3.position.y)
+    mob5.move_fc(player.position.x,player.position.y,mob5.position.x,mob5.position.y)
 
 
+    //player
+    if(player.hp > 0){
+      player.draw(g)
+    }else{
+      g.drawPicture(getWindowHeight / 2,getWindowWidth / 2,imgBitmap)
+    }
   }
 
 

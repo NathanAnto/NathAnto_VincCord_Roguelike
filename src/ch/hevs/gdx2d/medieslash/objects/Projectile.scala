@@ -4,6 +4,7 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.lib.interfaces.DrawableObject
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Circle, Vector2}
+import scala.math._
 
 class Projectile(startPos: Vector2) extends Object with DrawableObject {
 
@@ -11,6 +12,9 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
   override var collider: Circle = new Circle(startPos.x, startPos.y, 30)
   var xSpeed: Int = 7
   var ySpeed: Int = 7
+  var xSpeedMob: Int = 13
+  var ySpeedMob: Int = 13
+  var angleTorwardsPlayer: Double = 45
   var diagoSpeed: Int = (xSpeed * 1.2 * math.cos(math.Pi / 4)).toInt
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
@@ -54,6 +58,16 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
     }
   }
 
+  def changeAngleAndSpeed(posX_player: Float,posY_player: Float): Unit = {
+    angleTorwardsPlayer = toDegrees(atan2(posY_player - position.y,posX_player - position.x))
+    xSpeed = (cos(toRadians(angleTorwardsPlayer)) * xSpeedMob).toInt
+    ySpeed = (sin(toRadians(angleTorwardsPlayer)) * ySpeedMob).toInt
+  }
+  def move_proj_towards_player(): Unit = {
+    position.x += xSpeed
+    position.y += ySpeed
+
+  }
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
