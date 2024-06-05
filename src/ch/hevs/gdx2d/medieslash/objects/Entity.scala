@@ -11,6 +11,9 @@ abstract class Entity extends GameObject with DrawableObject {
   var sprites: Spritesheet
   var animations: mutable.HashMap[String, Animation]
   var currentAnimation: Animation
+  var xSpeed: Int
+  var ySpeed: Int
+  var diagoSpeed: Int
 
   protected var maxHp: Int
   protected var hp: Int
