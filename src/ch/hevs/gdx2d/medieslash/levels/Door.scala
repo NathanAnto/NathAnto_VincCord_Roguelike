@@ -17,9 +17,9 @@ class Door(var room: Room) extends Object {
     super.draw(g)
 
     if (collider.overlaps(player.collider) && active) {
+      player.position = nextPlayerPos
       RoomManager.removeRoomDoors()
       RoomManager.nextRoom(this.room)
-      player.position = nextPlayerPos
     }
 
 //    g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN) // Draw collider

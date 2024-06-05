@@ -90,29 +90,16 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
     // player projectile
     proj_player = new PlayerProjectile(new Vector2(player.position.x,player.position.y))
 
-
-
-
     // create mob
     mob = new Mob(new Vector2(300,300))
     mob1 = new Mob(new Vector2(500,400))
-    mob1.xSpeed = 2
-    mob1.ySpeed = 2
     mob2 = new Mob(new Vector2(600,400))
     mob3 = new Mob(new Vector2(400,200))
-    mob3.xSpeed = 3
-    mob3.ySpeed = 3
     mob4 = new Mob(new Vector2(400,300))
 
     mob5 = new Mob(new Vector2(200,200))
 
-
-    proj_mob4 = new MobProjectile(mob4,new Vector2(mob4.position.x,mob4.position.y))
-
-
-
-
-
+    proj_mob4 = new MobProjectile(mob4, new Vector2(mob4.position.x,mob4.position.y))
 
     // create map
     tiledMap = new TmxMapLoader().load("data/maps/desert.tmx")
@@ -201,9 +188,6 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
       mob5.draw(g)
     }
 
-
-
-
     // mob Projectile
     proj_mob4.draw(g)
     proj_mob4.move_proj_towards_player()
@@ -211,7 +195,7 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
       compteProjectilMob += 5
       proj_mob4.position.x = mob4.position.x
       proj_mob4.position.y = mob4.position.y
-      proj_mob4.changeAngleAndSpeed(player.position.x,player.position.y)
+      proj_mob4.changeAngleAndSpeed()
     }
 
 
@@ -222,12 +206,12 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
     player.move_controller(leftSickVal.x,leftSickVal.y)
 
     // move mob
-
+    /*
     mob.move_fc(player.position.x,player.position.y,mob.position.x,mob.position.y)
     mob1.move_fc(player.position.x,player.position.y,mob1.position.x,mob1.position.y)
     mob2.move_fc(player.position.x,player.position.y,mob2.position.x,mob2.position.y)
     mob3.move_fc(player.position.x,player.position.y,mob3.position.x,mob3.position.y)
-    mob5.move_fc(player.position.x,player.position.y,mob5.position.x,mob5.position.y)
+    mob5.move_fc(player.position.x,player.position.y,mob5.position.x,mob5.position.y)*/
 
 
     //player

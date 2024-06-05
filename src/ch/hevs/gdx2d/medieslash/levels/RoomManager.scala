@@ -72,7 +72,6 @@ object RoomManager {
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
     currentRoom.mobs -= mob
     if(currentRoom.mobs.isEmpty) {
-      println("Room cleared")
       currentRoom.roomCleared = true
 
       LevelManager.levelFinished()
@@ -89,6 +88,7 @@ object RoomManager {
   }
 
   def nextRoom(room: Room): Unit = {
+    println(s"Room: $room")
     LevelManager.getCurrentLevel.currentRoom = room
     MapManager.setNewMap(room.map)
   }

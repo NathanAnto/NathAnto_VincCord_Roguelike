@@ -21,11 +21,12 @@ class Player(p: Vector2) extends Entity {
 
   override var maxHp: Int = 10
   override var hp: Int = maxHp
+
+  var speed = new Vector2(0, 0)
+
   var tolerance: Double = 0.5
 
-
-
-
+  tag = "player"
 
   def move_fc(left: Boolean, right: Boolean, up: Boolean, down: Boolean): Unit = {
     if(left && !right && !up && !down){
@@ -142,24 +143,13 @@ class Player(p: Vector2) extends Entity {
         }
       }
     }
-
-
   }
-
-
-  var speed = new Vector2(0, 0)
-
-  tag = "player"
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
 
     g.setColor(Color.BLUE)
     g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN) // Draw collider
-
-    position.x += speed.x
-    position.y += speed.y
-
 
     g.draw(
       currentAnimation.playAnimation(),

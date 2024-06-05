@@ -58,8 +58,8 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
     }
   }
 
-  def changeAngleAndSpeed(posX_player: Float,posY_player: Float): Unit = {
-    angleTorwardsPlayer = toDegrees(atan2(posY_player - position.y,posX_player - position.x))
+  def changeAngleAndSpeed(): Unit = {
+    angleTorwardsPlayer = toDegrees(atan2(player.position.y - position.y, player.position.x - position.x))
     xSpeed = (cos(toRadians(angleTorwardsPlayer)) * xSpeedMob).toInt
     ySpeed = (sin(toRadians(angleTorwardsPlayer)) * ySpeedMob).toInt
   }

@@ -11,10 +11,8 @@ class PlayerProjectile(startPos: Vector2) extends Projectile(startPos) {
       if(collider.overlaps(mob.collider)) {
         // Mob hit
         mob.asInstanceOf[Mob].takeDamage(player.damage)
-        println("mob touché")
         GameObject.destroyInstance(this)
       }
-
     }
   }
 }
