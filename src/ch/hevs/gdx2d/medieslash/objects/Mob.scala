@@ -3,6 +3,7 @@ package ch.hevs.gdx2d.medieslash.objects
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
+import ch.hevs.gdx2d.medieslash.levels.RoomManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Circle, Vector2}
 
@@ -23,6 +24,8 @@ class Mob(p: Vector2) extends Entity {
   // type de mod
   var mob_type: String = "zombie"
 
+
+  tag = "mob"
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
   def move_fc(posX_player: Float,posY_player: Float,posX_mob: Float,posY_mob: Float): Unit = {
@@ -94,7 +97,17 @@ class Mob(p: Vector2) extends Entity {
     g.drawFilledRectangle(position.x, position.y, 48, 48, 0)
 
     if(collider.overlaps(player.collider)) {
-      println("collided with player")
+//      println("colliding with player")
+      RoomManager.mobDied(this)
+      GameObject.destroyInstance(this)
+    }
+  }
+
+  override def takeDamage(dmg: Int): Unit = {
+    hp -= dmg
+    if (hp <= 0) {
+      println("DEAD")
+      GameObject.destroyInstance(this)
     }
   }
 }
