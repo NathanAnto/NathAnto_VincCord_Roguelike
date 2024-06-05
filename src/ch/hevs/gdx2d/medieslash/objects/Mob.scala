@@ -3,6 +3,7 @@ package ch.hevs.gdx2d.medieslash.objects
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
+import ch.hevs.gdx2d.medieslash.levels.RoomManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Circle, Vector2}
 
@@ -10,13 +11,15 @@ import scala.collection.mutable
 
 class Mob(p: Vector2) extends Entity {
   override var position: Vector2 = p
-  override var collider: Circle = new Circle(p.x, p.y, 50)
+  override var collider: Circle = new Circle(p.x, p.y, 30)
   override var sprites: Spritesheet = _
   override var animations: mutable.HashMap[String, Animation] = mutable.HashMap()
   override var currentAnimation: Animation = _
 
   override var maxHp = 20
   override var hp = maxHp
+
+  tag = "mob"
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
 
@@ -29,7 +32,17 @@ class Mob(p: Vector2) extends Entity {
     g.drawFilledRectangle(position.x, position.y, 64, 64, 0)
 
     if(collider.overlaps(player.collider)) {
-      println("collided with player")
+//      println("colliding with player")
+      RoomManager.mobDied(this)
+      GameObject.destroyInstance(this)
+    }
+  }
+
+  override def takeDamage(dmg: Int): Unit = {
+    hp -= dmg
+    if (hp <= 0) {
+      println("DEAD")
+      GameObject.destroyInstance(this)
     }
   }
 }

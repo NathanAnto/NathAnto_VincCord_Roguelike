@@ -18,7 +18,7 @@ object GameObject {
   def getGameobjects(): ArrayBuffer[GameObject] = gameObjects
 
   private def objectCreated(g: GameObject): Unit = {
-    println(s"GameObject $g created")
+//    println(s"GameObject $g created")
     gameObjects.addOne(g)
   }
 
