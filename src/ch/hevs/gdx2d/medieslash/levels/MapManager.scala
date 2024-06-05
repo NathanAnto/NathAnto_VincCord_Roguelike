@@ -2,6 +2,7 @@ package ch.hevs.gdx2d.medieslash.levels
 
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.levels.LevelManager.getCurrentLevel
+import ch.hevs.gdx2d.medieslash.objects.MobManager
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.maps.tiled.{TiledMap, TiledMapRenderer, TiledMapTile, TiledMapTileLayer}
 import com.badlogic.gdx.math.Vector2
@@ -92,6 +93,8 @@ object MapManager {
     doorLayers.addOne("E", map.getLayers.get(3).asInstanceOf[TiledMapTileLayer])
     doorLayers.addOne("W", map.getLayers.get(4).asInstanceOf[TiledMapTileLayer])
 //    doorLayers.addOne("Boss", map.getLayers.get(5).asInstanceOf[TiledMapTileLayer])
+
+    MobManager.resetMobs()
 
     doorLayers.foreach { case (key, layer) =>
       layer.setVisible(false)

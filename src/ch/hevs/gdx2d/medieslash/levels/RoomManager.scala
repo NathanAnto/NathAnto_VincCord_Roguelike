@@ -1,7 +1,7 @@
 package ch.hevs.gdx2d.medieslash.levels
 
 import ch.hevs.gdx2d.medieslash.levels.MapManager.{doorLayers, tiledLayer}
-import ch.hevs.gdx2d.medieslash.objects.{GameObject, Mob}
+import ch.hevs.gdx2d.medieslash.objects.{GameObject, Mob, MobManager}
 import com.badlogic.gdx.math.Vector2
 
 object RoomManager {
@@ -25,7 +25,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("N")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(currentRoom.width/2, OFFSET)
+                door.nextPlayerPos = new Vector2(currentRoom.width/2, OFFSET) // OFFSET
               }
             }
           }
@@ -35,7 +35,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("S")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(currentRoom.width/2, currentRoom.height - OFFSET)
+                door.nextPlayerPos = new Vector2(currentRoom.width/2, currentRoom.height - OFFSET) // currentRoom.height - OFFSET
               }
             }
           }
@@ -45,7 +45,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("E")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(OFFSET, currentRoom.height/2)
+                door.nextPlayerPos = new Vector2(OFFSET, currentRoom.height/2) // OFFSET
               }
             }
           }
@@ -55,7 +55,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("W")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(currentRoom.width - OFFSET, currentRoom.height/2)
+                door.nextPlayerPos = new Vector2(currentRoom.width - OFFSET, currentRoom.height/2) // currentRoom.width - OFFSET
               }
             }
           }
@@ -80,7 +80,7 @@ object RoomManager {
 
   def removeRoomDoors(): Unit = {
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
-    val trash_pos = new Vector2(0,0)
+    val trash_pos = new Vector2(2000,2000)
     // Remove doors from room before
     for((s, d) <- currentRoom.doors) {
       d.position = trash_pos

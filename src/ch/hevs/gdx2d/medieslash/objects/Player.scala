@@ -11,44 +11,43 @@ import scala.collection.mutable
 
 class Player(p: Vector2) extends Entity {
   override var position: Vector2 = p
-  override var collider: Circle = new Circle(p.x, p.y, 30)
   override var sprites: Spritesheet = _
   override var animations: mutable.HashMap[String, Animation] = mutable.HashMap()
   override var currentAnimation: Animation = _
-  override var xSpeed: Int = 4
-  override var ySpeed: Int = 4
-  override var diagoSpeed: Int = (xSpeed * 1.2 * math.cos(math.Pi / 4)).toInt
+  override var speed: Float = 4
+  override var diagoSpeed: Int = (speed * 1.2 * math.cos(math.Pi / 4)).toInt
+  override var hitTimer: Float = 1f
 
-  override var maxHp: Int = 10
-  override var hp: Int = maxHp
+  override var maxHp: Float = 10f
+  override var hp: Float = maxHp
 
-  var speed = new Vector2(0, 0)
-
+  var attackSpeed: Float = 1f
   var tolerance: Double = 0.5
 
   tag = "player"
+  damage = 1f
 
   def move_fc(left: Boolean, right: Boolean, up: Boolean, down: Boolean): Unit = {
     if(left && !right && !up && !down){
-      position.x -= xSpeed
+      position.x -= speed
       if (currentAnimation != animations("left")) {
         currentAnimation = animations("left")
       }
     }
     if(right && !left && !up && !down){
-      position.x += xSpeed
+      position.x += speed
       if (currentAnimation != animations("right")) {
         currentAnimation = animations("right")
       }
     }
     if(up && !right && !left && !down){
-      position.y += ySpeed
+      position.y += speed
       if (currentAnimation != animations("up")) {
         currentAnimation = animations("up")
       }
     }
     if(down && !right && !up && !left){
-      position.y -= ySpeed
+      position.y -= speed
       if (currentAnimation != animations("down")) {
         currentAnimation = animations("down")
       }
@@ -104,7 +103,7 @@ class Player(p: Vector2) extends Entity {
           currentAnimation = animations("down")
         }
       } else {
-        position.y -= ySpeed
+        position.y -= speed
         if (currentAnimation != animations("down")) {
           currentAnimation = animations("down")
         }
@@ -124,19 +123,19 @@ class Player(p: Vector2) extends Entity {
             currentAnimation = animations("up")
           }
         } else {
-          position.y += ySpeed
+          position.y += speed
           if (currentAnimation != animations("up")) {
             currentAnimation = animations("up")
           }
         }
       } else {
         if (x > tolerance) {
-          position.x += xSpeed
+          position.x += speed
           if (currentAnimation != animations("right")) {
             currentAnimation = animations("right")
           }
         } else if (x < -tolerance) {
-          position.x -= xSpeed
+          position.x -= speed
           if (currentAnimation != animations("left")) {
             currentAnimation = animations("left")
           }
@@ -149,7 +148,7 @@ class Player(p: Vector2) extends Entity {
     super.draw(g)
 
     g.setColor(Color.BLUE)
-    g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN) // Draw collider
+    g.drawFilledCircle(position.x, position.y, colliderRadius, Color.GREEN) // Draw collider
 
     g.draw(
       currentAnimation.playAnimation(),
@@ -157,6 +156,4 @@ class Player(p: Vector2) extends Entity {
       (position.y) - currentAnimation.SPRITE_HEIGHT / 2
     )
   }
-
-  //  override def takeDamage(dmg: Int): Unit
 }

@@ -7,21 +7,23 @@ import com.badlogic.gdx.math.{Circle, Vector2}
 
 class Door(var room: Room) extends Object {
   override var position: Vector2 = new Vector2()
-  override var collider: Circle = new Circle(position.x, position.y, 25)
   var active: Boolean = false
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
   var nextPlayerPos: Vector2 = _
+  private var colliderRadius = 25
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
 
-    if (collider.overlaps(player.collider) && active) {
-      player.position = nextPlayerPos
+    if (getCollider(colliderRadius).overlaps(player.getCollider(player.colliderRadius)) && active) {
+      println(s"collided door $this")
       RoomManager.removeRoomDoors()
+      player.position = nextPlayerPos
       RoomManager.nextRoom(this.room)
     }
 
 //    g.drawFilledCircle(collider.x, collider.y, collider.radius, Color.GREEN) // Draw collider
   }
+
 }

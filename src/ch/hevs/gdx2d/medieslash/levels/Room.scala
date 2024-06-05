@@ -1,7 +1,7 @@
 package ch.hevs.gdx2d.medieslash.levels
 
 import ch.hevs.gdx2d.medieslash.levels.MapManager.{doorLayers, tiledLayer}
-import ch.hevs.gdx2d.medieslash.objects.Mob
+import ch.hevs.gdx2d.medieslash.objects.{Mob, MobManager}
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
 
@@ -30,9 +30,7 @@ class Room(val x: Int, val y: Int) {
 
   private def generateMobs(): Unit = {
     if(true) { // if !isBossRoom
-      for (i <- 0 until 1) {
-        mobs += new Mob(new Vector2(Random.between(100, width-100), Random.between(100, height-100)))
-      }
+      mobs = MobManager.getMobs()
     } else {
       // mobs += new Boss()
     }

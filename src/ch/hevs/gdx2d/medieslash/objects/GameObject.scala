@@ -7,7 +7,8 @@ import scala.collection.mutable.ArrayBuffer
 abstract class GameObject {
   var tag: String = ""
   var position: Vector2
-  var collider: Circle
+
+  def getCollider(radius: Int) = new Circle(position.x, position.y, radius)
 
   GameObject.objectCreated(this)
 }
@@ -28,6 +29,7 @@ object GameObject {
 
   def destroyInstance(g: GameObject): Unit = {
     // TODO: Find better way to destroy object
+    g
     g.position.x = 2000
     g.position.y = 2000
     gameObjects -= g

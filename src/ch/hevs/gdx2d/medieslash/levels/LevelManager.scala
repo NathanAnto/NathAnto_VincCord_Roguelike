@@ -1,5 +1,6 @@
 package ch.hevs.gdx2d.medieslash.levels
 
+import ch.hevs.gdx2d.medieslash.objects.MobManager
 import com.badlogic.gdx.maps.tiled.{TiledMap, TmxMapLoader}
 
 import scala.collection.mutable
@@ -20,7 +21,6 @@ object LevelManager {
   def getCurrentLevel: Level = levels(currentLevelIndex)
 
   def startLevel(): Unit = {
-
     MapManager.setNewMap(getCurrentLevel.currentRoom.map)
     println(s"Starting Level ${currentLevelIndex + 1}")
     println(s"Rooms: ${getCurrentLevel.roomCount}")
@@ -38,8 +38,6 @@ object LevelManager {
     for (i <- 0 until n) {
       val level = new Level(i + 1, w, h)
       level.createRooms()
-      println(s"Level ${level.id}")
-
       level.roomCount = clamp(MIN_ROOM_COUNT + i, 0, m)
 
       val startRoom = level.getRoom(level.width / 2, level.height / 2)
@@ -112,6 +110,7 @@ object LevelManager {
         // TODO: End game
         return
       }
+      MobManager.upgradeMobs()
       startLevel()
     } else {
       for((s, d) <- getCurrentLevel.currentRoom.doors) {
