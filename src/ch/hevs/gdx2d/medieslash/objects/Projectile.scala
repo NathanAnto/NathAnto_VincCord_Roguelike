@@ -16,6 +16,14 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
   var ySpeedMob: Int = 13
   var angleTorwardsPlayer: Double = 45
   var diagoSpeed: Int = (xSpeed * 1.2 * math.cos(math.Pi / 4)).toInt
+  // hache
+  var hacheRadians = math.toRadians(180)
+  var hache_cosTheta = math.cos(hacheRadians)
+  var hache_sinTheta = math.sin(hacheRadians)
+  var hache_translatedX = 0f
+  var hache_translatedY = 0f
+  var hache_rotatedX: Double = 0
+  var hache_rotatedY: Double = 0
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
 
@@ -67,6 +75,25 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
     position.x += xSpeed
     position.y += ySpeed
 
+  }
+
+  def initPosxy(): Unit = {
+    position.x = player.position.x + 85
+    position.y = player.position.y
+  }
+  def hache_player(): Unit = {
+    hache_translatedX = position.x - player.position.x
+    hache_translatedY = position.y - player.position.y
+
+    hache_rotatedX = hache_translatedX * hache_cosTheta - hache_translatedY * hache_sinTheta
+    hache_rotatedY = hache_translatedX * hache_sinTheta + hache_translatedY * hache_cosTheta
+  }
+
+  def hache_changePos(): Unit = {
+    position.x = (hache_rotatedX + player.position.x).toInt
+    position.y = (hache_rotatedY + player.position.y).toInt
+    println(position.x)
+    println(position.y)
   }
 
   override def draw(g: GdxGraphics): Unit = {

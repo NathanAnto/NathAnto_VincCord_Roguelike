@@ -42,6 +42,8 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
   var mob4: Mob = _
   var mob5: Mob = _
   var proj_player: PlayerProjectile = _
+  var hache_player: PlayerProjectile = _
+  var hache_init = true
   var proj_mob4: MobProjectile = _
   var compte: Double = 0
   var compteProjectil: Int = 10
@@ -89,12 +91,13 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
 
     // player projectile
     proj_player = new PlayerProjectile(new Vector2(player.position.x,player.position.y))
+    hache_player = new PlayerProjectile(new Vector2(player.position.x,player.position.y))
 
 
 
 
     // create mob
-    mob = new Mob(new Vector2(300,300))
+    /*mob = new Mob(new Vector2(300,300))
     mob1 = new Mob(new Vector2(500,400))
     mob1.xSpeed = 2
     mob1.ySpeed = 2
@@ -104,10 +107,10 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
     mob3.ySpeed = 3
     mob4 = new Mob(new Vector2(400,300))
 
-    mob5 = new Mob(new Vector2(200,200))
+    mob5 = new Mob(new Vector2(200,200))*/
 
 
-    proj_mob4 = new MobProjectile(mob4,new Vector2(mob4.position.x,mob4.position.y))
+    // proj_mob4 = new MobProjectile(mob4,new Vector2(mob4.position.x,mob4.position.y))
 
 
 
@@ -180,12 +183,22 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
       proj_move_up = move_up
     }
 
+    //hache
+    if(hache_init){
+      hache_player.initPosxy()
+      hache_init = false
+    }
+    hache_player.draw(g)
+    hache_player.hache_player()
+    hache_player.hache_changePos()
+
+
 
     // mob hp
-    if(mob.hp > 0){
+    /*if(mob.hp > 10){
       mob.draw(g)
     }
-    if(mob1.hp > 0){
+    if(mob1.hp > 10){
       mob1.draw(g)
     }
     if(mob2.hp > 10){
@@ -194,25 +207,26 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
     if(mob3.hp > 10){
       mob3.draw(g)
     }
-    if(mob4.hp > 0){
+    if(mob4.hp > 10){
       mob4.draw(g)
     }
     if(mob5.hp > 10){
       mob5.draw(g)
-    }
+    }*/
 
 
 
 
     // mob Projectile
-    proj_mob4.draw(g)
+    /*proj_mob4.draw(g)
     proj_mob4.move_proj_towards_player()
     if(compte.toInt == compteProjectilMob){
       compteProjectilMob += 5
       proj_mob4.position.x = mob4.position.x
       proj_mob4.position.y = mob4.position.y
       proj_mob4.changeAngleAndSpeed(player.position.x,player.position.y)
-    }
+      println("AAAAAAAAANGGGGGGGGLEEE")
+    }*/
 
 
     // move player
@@ -223,11 +237,11 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
 
     // move mob
 
-    mob.move_fc(player.position.x,player.position.y,mob.position.x,mob.position.y)
+    /*mob.move_fc(player.position.x,player.position.y,mob.position.x,mob.position.y)
     mob1.move_fc(player.position.x,player.position.y,mob1.position.x,mob1.position.y)
     mob2.move_fc(player.position.x,player.position.y,mob2.position.x,mob2.position.y)
     mob3.move_fc(player.position.x,player.position.y,mob3.position.x,mob3.position.y)
-    mob5.move_fc(player.position.x,player.position.y,mob5.position.x,mob5.position.y)
+    mob5.move_fc(player.position.x,player.position.y,mob5.position.x,mob5.position.y)*/
 
 
     //player
