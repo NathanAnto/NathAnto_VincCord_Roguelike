@@ -31,7 +31,7 @@ abstract class Entity extends GameObject with DrawableObject {
     // Do Effect
     hp -= dmg
     if (hp <= 0) {
-      GameObject.destroyInstance(this)
+
     }
   }
 }

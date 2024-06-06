@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2
 
 class PlayerProjectile(startPos: Vector2) extends Projectile(startPos) {
   override def draw(g: GdxGraphics): Unit = {
+    if(targetsHit.nonEmpty) return
     super.draw(g)
 
     for(m: GameObject <- GameObject.getObjectsByTag("mob")) {

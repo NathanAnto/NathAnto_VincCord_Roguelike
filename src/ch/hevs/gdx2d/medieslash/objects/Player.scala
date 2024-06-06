@@ -18,7 +18,7 @@ class Player(p: Vector2) extends Entity {
   override var diagoSpeed: Int = (speed * 1.2 * math.cos(math.Pi / 4)).toInt
   override var hitTimer: Float = 1f
 
-  override var maxHp: Float = 10f
+  override var maxHp: Float = 20f
   override var hp: Float = maxHp
 
   var attackSpeed: Float = 1f
@@ -84,7 +84,6 @@ class Player(p: Vector2) extends Entity {
         currentAnimation = animations("down")
       }
     }
-
   }
 
   def move_controller(x: Double,y: Double): Unit = {

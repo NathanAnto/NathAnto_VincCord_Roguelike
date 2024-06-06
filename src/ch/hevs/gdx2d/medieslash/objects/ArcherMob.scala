@@ -9,9 +9,11 @@ import scala.math.{atan2, toDegrees}
 
 class ArcherMob(pos: Vector2) extends Mob(pos) {
   var projectile: MobProjectile = new MobProjectile(this, pos)
-  var projectileRespawn: Float = 3f
+  var projectileRespawn: Float = 5f
   maxHp = 1f
   hp = maxHp
+
+  override def toString: String = s"Archer ${super.toString}"
 
   override def move_fc(): Unit = {}
 
@@ -20,13 +22,12 @@ class ArcherMob(pos: Vector2) extends Mob(pos) {
 
     hitTimer += Gdx.graphics.getDeltaTime
 
-    if(hitTimer > projectileRespawn) {
+    if(hitTimer >= projectileRespawn) {
       hitTimer = 0
       projectile.playerHit = false
       projectile.position.x = position.x
       projectile.position.y = position.y
-
-      projectile.changeAngleAndSpeed()
+      projectile.getAngleToTarget(player)
     }
 
     // TODO: Draw sprites

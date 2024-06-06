@@ -13,27 +13,36 @@ object MobManager {
   private val MAX_MOBS_PER_ROOM = 8
 
   def generateMobs(): Unit = {
-    for (i <- 0 until 7) {
+    val l = mobs.length
+
+    val meleeMobs: Int = 70 * l / 100 // 70 %
+    val archerMobs: Int = 30 * l / 100 // 30 %
+
+    for (i <- 0 until meleeMobs) {
       mobs(i) = new Mob(new Vector2(2000,2000))
     }
-    for (i <- 7 until 10) {
+    for (i <- (l-archerMobs) until l) {
       mobs(i) = new ArcherMob(new Vector2(2000,2000))
     }
   }
 
   def getMobs(): ArrayBuffer[Mob] = {
-    var m: ArrayBuffer[Mob] = ArrayBuffer()
+    val m: ArrayBuffer[Mob] = ArrayBuffer()
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
     val numMobs = MAX_MOBS_PER_ROOM - (LevelManager.levels.size - LevelManager.getCurrentLevel.id + 1)
 
-    println(s"$numMobs in this room")
-
-    for(x <- 0 until numMobs) {
+    var usedIndices = Set[Int]()
+    while (usedIndices.size < numMobs) {
       val i = Random.between(0, mobs.length)
-      val newMob = mobs(i)
-      newMob.position = new Vector2(Random.between(100, currentRoom.width - 100), Random.between(100, currentRoom.height - 100))
-      m += newMob
+      if (!usedIndices.contains(i)) {
+        usedIndices += i
+        val newMob = mobs(i)
+        newMob.position = new Vector2(Random.between(100, currentRoom.width - 100), Random.between(100, currentRoom.height - 100))
+        m += newMob
+      }
     }
+
+//    println(s"Mobs in room: ${numMobs}")
 
     m
   }
@@ -41,6 +50,7 @@ object MobManager {
   def resetMobs(): Unit = {
     for(mob <- mobs) {
       mob.hp = mob.maxHp
+//      println(mob)
     }
   }
 

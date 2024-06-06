@@ -6,7 +6,7 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
 import ch.hevs.gdx2d.medieslash.levels.MapManager.tiledLayer
 import ch.hevs.gdx2d.medieslash.levels.{Door, LevelManager, MapManager}
-import ch.hevs.gdx2d.medieslash.objects.{ArcherMob, GameObject, Mob, MobManager, MobProjectile, Player, PlayerProjectile, Projectile}
+import ch.hevs.gdx2d.medieslash.objects.{Entity, GameObject, Mob, MobManager, MobProjectile, Object, Player, PlayerProjectile, Projectile}
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.controllers.{Controller, Controllers}
 import com.badlogic.gdx.math.Vector2
@@ -21,14 +21,10 @@ object Main {
 
 class Main extends PortableApplication(1920, 1080) {
 
-  var player: Player = _
   var dt: Float = 0f;
 
+  var player: Player = _
   var proj_player: PlayerProjectile = _
-  var proj_mob4: MobProjectile = _
-  var compte: Double = 0
-  var compteProjectil: Int = 10
-  var compteProjectilMob: Int = 10
 
   // Controller
   var ctrl: Controller = null
@@ -69,6 +65,9 @@ class Main extends PortableApplication(1920, 1080) {
     // player projectile
     proj_player = new PlayerProjectile(new Vector2(player.position.x,player.position.y))
 
+    // img lose
+    imgBitmap = new BitmapImage("data/images/loser.jpg")
+
     // Controller
     if (Controllers.getControllers.size > 0){
       ctrl = Controllers.getControllers.first
@@ -94,11 +93,6 @@ class Main extends PortableApplication(1920, 1080) {
     g.clear()
     dt += Gdx.graphics.getDeltaTime
 
-    // Camera follows the hero
-    g.zoom(MapManager.zoom)
-    g.moveCamera(player.position.x, player.position.y, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
-    MapManager.render(g)
-
     //player projectile
 //    proj_player.draw(g)
     proj_player.move_projectil(proj_move_left,proj_move_rigt,proj_move_up,proj_move_down)
@@ -121,27 +115,34 @@ class Main extends PortableApplication(1920, 1080) {
     player.move_fc(move_left,move_rigt,move_up,move_down)
     player.move_controller(leftSickVal.x,leftSickVal.y)
 
-    for (obj <- GameObject.getGameobjects().toArray) {
-      obj match {
-        case player: Player =>
-          if(player.hp > 0) {
-            player.draw(g)
-          }else{
-            g.drawPicture(getWindowHeight / 2,getWindowWidth / 2,imgBitmap)
-          }
-        case mob: Mob =>
-          if(LevelManager.getCurrentLevel.currentRoom.mobs.contains(mob)) {
-            mob.draw(g)
-            mob.move_fc()
-          }
-        case door: Door =>
-          door.draw(g)
+    g.zoom(MapManager.zoom)
+    MapManager.render(g)
 
-        case projectile: Projectile => {
-          projectile.draw(g)
+    if(player.hp > 0) {
+      for (obj <- GameObject.getGameobjects().toArray) {
+        obj match {
+          case player: Player =>
+            // Camera follows the hero
+            g.moveCamera(player.position.x, player.position.y, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
+            player.draw(g)
+          case mob: Mob =>
+            if(LevelManager.getCurrentLevel.currentRoom.mobs.contains(mob)) {
+              mob.draw(g)
+              mob.move_fc()
+            }
+          case e: Entity => e.draw(g)
+          case o: Object => o.draw(g)
+          case door: Door =>
+            door.draw(g)
+          case _ =>
         }
-        case _ =>
       }
+    } else {
+
+      // LOSE SCREEN
+      val pos = new Vector2(LevelManager.getCurrentLevel.currentRoom.width, LevelManager.getCurrentLevel.currentRoom.height)
+      g.moveCamera(pos.x / 2, pos.y / 2, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
+      g.drawPicture(pos.x / 2, pos.y / 2, imgBitmap)
     }
 
     g.drawSchoolLogo()

@@ -3,7 +3,7 @@ package ch.hevs.gdx2d.medieslash.objects
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.lib.interfaces.DrawableObject
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.math.{Circle, Vector2}
+import com.badlogic.gdx.math.Vector2
 
 import scala.collection.mutable.ArrayBuffer
 import scala.math._
@@ -11,8 +11,7 @@ import scala.math._
 class Projectile(startPos: Vector2) extends Object with DrawableObject {
   override var position: Vector2 = startPos
   var speed: Int = 5
-  var speedMob: Int = 2
-  var angleTorwardsPlayer: Double = 45
+  var projSpeed: Int = 10
   var diagoSpeed: Int = (speed * 1.2 * math.cos(math.Pi / 4)).toInt
   var colliderRadius = 10
   var velocity: Vector2 = new Vector2(1,0)
@@ -20,6 +19,9 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
   var targetsHit: ArrayBuffer[Entity] = ArrayBuffer()
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
+
+  var xSpeed: Int = 0
+  var ySpeed: Int = 0
 
   // fonction pour partir en fonction du player
   def move_projectil(left: Boolean, right: Boolean, up: Boolean, down: Boolean): Unit = {
@@ -59,20 +61,16 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
     nextVelocity.nor()
   }
 
-  def changeAngleAndSpeed(): Unit = {
-    angleTorwardsPlayer = toDegrees(atan2(player.position.y - position.y, player.position.x - position.x))
-    velocity.x = (cos(toRadians(angleTorwardsPlayer)) * speedMob).toInt
-    velocity.y = (sin(toRadians(angleTorwardsPlayer)) * speedMob).toInt
-  }
+  private var angleTorwardsPlayer = 0.0
 
-  def move_proj_towards_player(): Unit = {
-    position.x += speed
-    position.y += speed
+  def getAngleToTarget(target: Entity): Unit = {
+    angleTorwardsPlayer = toDegrees(atan2(target.position.y - position.y, target.position.x - position.x))
+    xSpeed = (cos(toRadians(angleTorwardsPlayer)) * projSpeed).toInt
+    ySpeed = (sin(toRadians(angleTorwardsPlayer)) * projSpeed).toInt
+    println(xSpeed, ySpeed)
   }
 
   override def draw(g: GdxGraphics): Unit = {
-    super.draw(g)
-
     position.x += velocity.x * speed
     position.y += velocity.y * speed
 

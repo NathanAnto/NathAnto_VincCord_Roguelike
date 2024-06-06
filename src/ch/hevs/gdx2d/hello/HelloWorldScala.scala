@@ -190,12 +190,11 @@ class HelloWorldScala extends PortableApplication(1000,1000)  {
 
     // mob Projectile
     proj_mob4.draw(g)
-    proj_mob4.move_proj_towards_player()
     if(compte.toInt == compteProjectilMob){
       compteProjectilMob += 5
       proj_mob4.position.x = mob4.position.x
       proj_mob4.position.y = mob4.position.y
-      proj_mob4.changeAngleAndSpeed()
+//      proj_mob4.getAngleToTarget()
     }
 
 

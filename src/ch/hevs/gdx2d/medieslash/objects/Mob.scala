@@ -19,13 +19,15 @@ class Mob(p: Vector2) extends Entity {
   override var diagoSpeed: Int = (speed * 2 * math.cos(math.Pi / 4)).toInt
   override var maxHp = 2
   override var hp = maxHp
-  override var hitTimer: Float = 2f
+  override var hitTimer: Float = 0f
   var velocity: Vector2 = new Vector2(1,0)
   var attackSpeed: Float = 2f
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
 
   tag = "mob"
+
+  override def toString: String = s"Mob [hp: $hp]"
 
   def move_fc(): Unit = {
     if(player.position.x <= position.x && player.position.y == position.y) {
@@ -87,8 +89,6 @@ class Mob(p: Vector2) extends Entity {
 
   }
   override def draw(g: GdxGraphics): Unit = {
-    super.draw(g)
-
     if(hp <= 0) return
 
     if(getCollider(colliderRadius).overlaps(player.getCollider(player.colliderRadius))) {
