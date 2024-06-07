@@ -9,6 +9,7 @@ import ch.hevs.gdx2d.medieslash.levels.{Door, LevelManager, MapManager}
 import ch.hevs.gdx2d.medieslash.objects.{Entity, GameObject, Mob, MobManager, MobProjectile, Object, Player, PlayerProjectile, Projectile}
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.controllers.{Controller, Controllers}
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 
 import scala.collection.mutable.ArrayBuffer
@@ -44,6 +45,9 @@ class Main extends PortableApplication(1920, 1080) {
   var proj_move_rigt: Boolean = false
   var proj_move_up: Boolean = false
   var proj_move_down: Boolean = false
+  // information player
+  // show hp
+
 
   override def onInit(): Unit = {
     setTitle("MedieSlash")
@@ -146,6 +150,9 @@ class Main extends PortableApplication(1920, 1080) {
     }
 
     g.drawSchoolLogo()
+    // player HP
+    if(player.hp >= 5) g.setColor(Color.GREEN) else g.setColor(Color.RED)
+    g.drawString(g.getCamera.position.x - 475,g.getCamera.position.y + 250,s"HP: ${player.hp.toInt.toString}")
   }
 
   // key
