@@ -14,7 +14,6 @@ class MobProjectile(mob: Mob, startPos: Vector2) extends Projectile(startPos) {
     if(getCollider(colliderRadius).overlaps(player.getCollider(player.colliderRadius))) {
       // player hit
       if(!playerHit) {
-        println("Player hit")
         player.takeDamage(mob.damage)
         playerHit = true
       }
@@ -23,8 +22,10 @@ class MobProjectile(mob: Mob, startPos: Vector2) extends Projectile(startPos) {
     position.x += xSpeed
     position.y += ySpeed
 
-    g.setColor(Color.RED)
-    g.drawFilledCircle(position.x, position.y, colliderRadius, Color.GREEN)
-    g.drawFilledRectangle(position.x, position.y, 20, 20, 0)
+    g.draw(
+      fireballAnim.playAnimation(),
+      position.x - fireballAnim.SPRITE_WIDTH / 6,
+      position.y - fireballAnim.SPRITE_HEIGHT / 6
+    )
   }
 }

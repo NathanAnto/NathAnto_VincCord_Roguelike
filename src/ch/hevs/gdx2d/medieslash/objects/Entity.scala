@@ -16,7 +16,7 @@ abstract class Entity extends GameObject with DrawableObject {
   var speed: Float
   var diagoSpeed: Int
   var hitTimer: Float
-  var colliderRadius: Int = 30
+  var colliderRadius: Int = 10
 
   protected var maxHp: Float
   protected var hp: Float
@@ -30,6 +30,8 @@ abstract class Entity extends GameObject with DrawableObject {
   def takeDamage(dmg: Float): Unit = {
     // Do Effect
     hp -= dmg
+
+    currentAnimation = animations("hit")
     if (hp <= 0) {
 
     }
