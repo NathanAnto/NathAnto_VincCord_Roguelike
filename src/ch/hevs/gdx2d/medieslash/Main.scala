@@ -1,8 +1,9 @@
 package ch.hevs.gdx2d.medieslash
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
+import ch.hevs.gdx2d.components.screen_management.RenderingScreen
 import ch.hevs.gdx2d.desktop.PortableApplication
-import ch.hevs.gdx2d.lib.GdxGraphics
+import ch.hevs.gdx2d.lib.{GdxGraphics, ScreenManager}
 import ch.hevs.gdx2d.medieslash.effects.Animation
 import ch.hevs.gdx2d.medieslash.levels.MapManager.tiledLayer
 import ch.hevs.gdx2d.medieslash.levels.{Door, LevelManager, MapManager}
@@ -21,7 +22,7 @@ object Main {
   }
 }
 
-class Main extends PortableApplication(1920, 1080) {
+class Main extends PortableApplication(1920,1080) {
 
   var dt: Float = 0f;
 
@@ -46,9 +47,12 @@ class Main extends PortableApplication(1920, 1080) {
   var proj_move_rigt: Boolean = false
   var proj_move_up: Boolean = false
   var proj_move_down: Boolean = false
+  // information player
+  // time start
+  var start_time = System.currentTimeMillis()
+
 
   override def onInit(): Unit = {
-    setTitle("MedieSlash")
 
     // Create player
     player = new Player(new Vector2(250, 250))
@@ -67,13 +71,13 @@ class Main extends PortableApplication(1920, 1080) {
     player.currentAnimation = player.animations("right")
 
     // player projectile
-    proj_player = new PlayerProjectile(new Vector2(player.position.x,player.position.y))
+    proj_player = new PlayerProjectile(new Vector2(player.position.x, player.position.y))
 
     // img lose
     imgBitmap = new BitmapImage("data/images/loser.jpg")
 
     // Controller
-    if (Controllers.getControllers.size > 0){
+    if (Controllers.getControllers.size > 0) {
       ctrl = Controllers.getControllers.first
       println(s"Controllleer: $ctrl")
     }
@@ -90,6 +94,7 @@ class Main extends PortableApplication(1920, 1080) {
 
   /**
    * This method is called periodically by the engine
+   *
    * @param g
    */
   override def onGraphicRender(g: GdxGraphics): Unit = {
@@ -104,7 +109,7 @@ class Main extends PortableApplication(1920, 1080) {
     proj_move_down = move_down
     proj_move_up = move_up
 
-    if(dt > player.attackSpeed){
+    if (dt > player.attackSpeed) {
       dt = 0
       proj_player.velocity.x = proj_player.nextVelocity.x
       proj_player.velocity.y = proj_player.nextVelocity.y
@@ -115,13 +120,13 @@ class Main extends PortableApplication(1920, 1080) {
     }
 
     // move player
-    player.move_fc(move_left,move_rigt,move_up,move_down)
+    player.move_fc(move_left, move_rigt, move_up, move_down)
     player.move_controller(leftSickVal.x, leftSickVal.y)
 
     g.zoom(MapManager.zoom)
     MapManager.render(g)
 
-    if(player.hp > 0) {
+    if (player.hp > 0) {
       for (obj <- GameObject.getGameobjects().toArray) {
         obj match {
           case player: Player =>
@@ -129,7 +134,7 @@ class Main extends PortableApplication(1920, 1080) {
             g.moveCamera(player.position.x, player.position.y, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
             player.draw(g)
           case mob: Mob =>
-            if(LevelManager.getCurrentLevel.currentRoom.mobs.contains(mob)) {
+            if (LevelManager.getCurrentLevel.currentRoom.mobs.contains(mob)) {
               mob.draw(g)
               mob.move_fc()
             }
@@ -155,7 +160,6 @@ class Main extends PortableApplication(1920, 1080) {
       g.drawPicture(pos.x / 2, pos.y / 2, imgBitmap)
       MapManager.zoom = 0.5f
     }
-
   }
 
   // key
@@ -202,3 +206,4 @@ class Main extends PortableApplication(1920, 1080) {
 
   }
 }
+
