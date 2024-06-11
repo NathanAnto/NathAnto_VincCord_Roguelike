@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 class Animation(val nFrames: Int, val SPRITE_WIDTH: Int = 64, val SPRITE_HEIGHT: Int = 64) {
 
-  private val FRAME_TIME = 0.15 // Duration of each frame
+  var FRAME_TIME = 0.15 // Duration of each frame
 
   private var ss: Spritesheet = _
 
@@ -15,6 +15,11 @@ class Animation(val nFrames: Int, val SPRITE_WIDTH: Int = 64, val SPRITE_HEIGHT:
   private var dt: Float = 0
 
   def this(path: String, nFrames: Int) = {
+    this(nFrames)
+    ss = new Spritesheet(path, SPRITE_WIDTH, SPRITE_HEIGHT)
+  }
+
+  def this(path: String, nFrames: Int, SPRITE_WIDTH: Int, SPRITE_HEIGHT: Int) = {
     this(nFrames)
     ss = new Spritesheet(path, SPRITE_WIDTH, SPRITE_HEIGHT)
   }
@@ -31,7 +36,9 @@ class Animation(val nFrames: Int, val SPRITE_WIDTH: Int = 64, val SPRITE_HEIGHT:
     return ss.sprites(0)(currentFrame)
   }
 
+  def resetAnimation(): Unit = currentFrame = 0
 
+  def getCurrentFrame = currentFrame
 
 
 

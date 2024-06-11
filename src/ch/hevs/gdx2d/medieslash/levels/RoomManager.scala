@@ -17,7 +17,7 @@ object RoomManager {
           val tileW = doorLayers("W").getCell(i, j)
 
           val pos = MapManager.tileToPosition(i, j)
-          val OFFSET: Int = 150
+          val OFFSET: Int = 55
 
           if (tileN != null) {
             val neighbour = LevelManager.getCurrentLevel.getRoom(currentRoom.x, currentRoom.y - 1)

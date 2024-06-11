@@ -30,65 +30,95 @@ class Mob(p: Vector2) extends Entity {
 
   override def toString: String = s"Mob [hp: $hp]"
 
+
+  val walkRightAnim: Animation = new Animation("data/images/skeleton/skeleton_walk_right.png", 13, 22, 33)
+  val walkLeftAnim: Animation = new Animation("data/images/skeleton/skeleton_walk_left.png", 13, 22, 33)
+
+  val attackRightAnim: Animation = new Animation("data/images/skeleton/skeleton_attack_right.png", 15, 43, 37)
+  attackRightAnim.FRAME_TIME = 0.1f
+  val attackLeftAnim: Animation = new Animation("data/images/skeleton/skeleton_attack_left.png", 15, 43, 37)
+  attackLeftAnim.FRAME_TIME = 0.1f
+
+  attackSpeed = (attackRightAnim.FRAME_TIME*6).toFloat
+
+  animations.addOne("right", walkRightAnim)
+  animations.addOne("left", walkLeftAnim)
+
+  animations.addOne("attack_right", attackRightAnim)
+  animations.addOne("attack_left", attackLeftAnim)
+
+  currentAnimation = walkLeftAnim
+
   def move_fc(): Unit = {
-    if(player.position.x <= position.x && player.position.y == position.y) {
+    var startOffset: Int = (position.y - speed).toInt
+    var endOffset: Int =  (position.y + speed).toInt
+
+    if(player.position.x <= position.x && Array.range(startOffset, endOffset).contains(player.position.y.toInt)) {
       velocity.x = -speed
-      /*if (currentAnimation != animations("left")) {
+      velocity.y = 0
+      if (currentAnimation != animations("left")) {
         currentAnimation = animations("left")
-      }*/
+      }
     }
-    if(player.position.x >= position.x && player.position.y == position.y){
+
+    if(player.position.x >= position.x && Array.range(startOffset, endOffset).contains(player.position.y.toInt)){
       velocity.x = speed
-      /*if (currentAnimation != animations("right")) {
+      velocity.y = 0
+      if (currentAnimation != animations("right")) {
         currentAnimation = animations("right")
-      }*/
+      }
     }
-    if(player.position.x == position.x && player.position.y >= position.y){
+
+    startOffset = (position.x - speed).toInt
+    endOffset = (position.x + speed).toInt
+    if(Array.range(startOffset, endOffset).contains(player.position.x.toInt) && player.position.y >= position.y){
+      velocity.x = 0
       velocity.y = speed
-      /*if (currentAnimation != animations("up")) {
-        currentAnimation = animations("up")
-      }*/
+      if (currentAnimation != animations("right")) {
+        currentAnimation = animations("right")
+      }
     }
-    if(player.position.x == position.x && player.position.y <= position.y){
+    if(Array.range(startOffset, endOffset).contains(player.position.x.toInt) && player.position.y <= position.y){
+      velocity.x = 0
       velocity.y = -speed
-      /*if (currentAnimation != animations("down")) {
-        currentAnimation = animations("down")
-      }*/
+      if (currentAnimation != animations("right")) {
+        currentAnimation = animations("right")
+      }
     }
 
-    if(player.position.x <= position.x && player.position.y >= position.y){
+    if(player.position.x <= position.x-speed && player.position.y >= position.y+speed){
       velocity.x = -diagoSpeed
       velocity.y = diagoSpeed
-      /*if (currentAnimation != animations("up")) {
-        currentAnimation = animations("up")
-      }*/
+      if (currentAnimation != animations("left")) {
+        currentAnimation = animations("left")
+      }
     }
 
-    if(player.position.x >= position.x && player.position.y >= position.y){
+    if(player.position.x >= position.x+speed && player.position.y >= position.y+speed){
       velocity.x = diagoSpeed
       velocity.y = diagoSpeed
-      /*if (currentAnimation != animations("up")) {
-        currentAnimation = animations("up")
-      }*/
+      if (currentAnimation != animations("right")) {
+        currentAnimation = animations("right")
+      }
     }
 
-    if(player.position.x <= position.x && player.position.y <= position.y){
+    if(player.position.x <= position.x-speed && player.position.y <= position.y-speed){
       velocity.x = -diagoSpeed
       velocity.y = -diagoSpeed
-      /*if (currentAnimation != animations("down")) {
-        currentAnimation = animations("down")
-      }*/
+      if (currentAnimation != animations("left")) {
+        currentAnimation = animations("left")
+        }
     }
 
-    if(player.position.x >= position.x && player.position.y <= position.y){
+    if(player.position.x >= position.x+speed && player.position.y <= position.y-speed){
       velocity.x = diagoSpeed
       velocity.y = -diagoSpeed
-      /*if (currentAnimation != animations("down")) {
-        currentAnimation = animations("down")
-      }*/
+      if (currentAnimation != animations("right")) {
+        currentAnimation = animations("right")
+      }
     }
-
   }
+
   override def draw(g: GdxGraphics): Unit = {
     if(hp <= 0) return
 
@@ -97,15 +127,19 @@ class Mob(p: Vector2) extends Entity {
       velocity.y = 0
 
       dealDamage()
+    } else {
+      attackLeftAnim.resetAnimation()
+      attackRightAnim.resetAnimation()
+
+      position.x += velocity.x * speed
+      position.y += velocity.y * speed
     }
 
-    position.x += velocity.x * speed
-    position.y += velocity.y * speed
-
-    // TODO: Draw sprites
-    g.setColor(Color.BLUE)
-    g.drawFilledCircle(position.x, position.y, colliderRadius, Color.RED)
-    g.drawFilledRectangle(position.x, position.y, 48, 48, 0)
+    g.draw(
+      currentAnimation.playAnimation(),
+      position.x - currentAnimation.SPRITE_WIDTH / 6,
+      position.y - currentAnimation.SPRITE_HEIGHT / 6
+    )
   }
 
   override def takeDamage(dmg: Float): Unit = {
@@ -118,6 +152,13 @@ class Mob(p: Vector2) extends Entity {
   }
 
   def dealDamage(): Unit = {
+    if(currentAnimation != animations("attack_left") && currentAnimation != animations("attack_right")) {
+      if(player.position.x < position.x)
+        currentAnimation = animations("attack_left")
+      else
+        currentAnimation = animations("attack_right")
+    }
+
     hitTimer += Gdx.graphics.getDeltaTime
 
     if(hitTimer > attackSpeed) {

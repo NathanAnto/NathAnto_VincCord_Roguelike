@@ -11,7 +11,6 @@ object XPManager {
   var upgrades: mutable.HashMap[String, Upgrade] = mutable.HashMap(
     (UpgradeType.HEALTH, new Upgrade(UpgradeType.HEALTH, 1f)),
     (UpgradeType.DAMAGE, new Upgrade(UpgradeType.DAMAGE, 0.2f)),
-    (UpgradeType.SPEED, new Upgrade(UpgradeType.SPEED, 1f)),
     (UpgradeType.ATTACK_SPEED, new Upgrade(UpgradeType.ATTACK_SPEED, 0.05f)),
     (UpgradeType.HEAL, new Upgrade(UpgradeType.HEAL, 5f))
   )
@@ -51,11 +50,6 @@ object XPManager {
         upgrade.amount *= 1.1f
       }
 
-      case UpgradeType.SPEED => {
-        player.speed += upgrade.amount
-        upgrade.amount *= 1.1f
-      }
-
       case UpgradeType.ATTACK_SPEED => {
         player.attackSpeed -= upgrade.amount
         upgrade.amount *= 1.1f
@@ -68,11 +62,10 @@ object XPManager {
         }
       }
     }
-    println("STATS:")
-    println(player.maxHp)
-    println(player.hp)
-    println(player.damage)
-    println(player.speed)
-    println(player.attackSpeed)
+//    println("STATS:")
+//    println(player.maxHp)
+//    println(player.hp)
+//    println(player.damage)
+//    println(player.attackSpeed)
   }
 }

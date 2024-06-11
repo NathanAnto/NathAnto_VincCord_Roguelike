@@ -10,6 +10,7 @@ import ch.hevs.gdx2d.medieslash.objects.{Entity, GameObject, Mob, MobManager, Ob
 import ch.hevs.gdx2d.medieslash.ui.UIManager
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.controllers.{Controller, Controllers}
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 
 import scala.collection.mutable.ArrayBuffer
@@ -50,16 +51,18 @@ class Main extends PortableApplication(1920, 1080) {
     setTitle("MedieSlash")
 
     // Create player
-    player = new Player(new Vector2(500, 500))
-    val walkRightAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_right.png", 4)
-    val walkLeftAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_left.png", 4)
-    val walkupAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_up.png", 4)
-    val walkdownAnim: Animation = new Animation("data/images/player/lumberjack_sheet_walk_down.png", 4)
+    player = new Player(new Vector2(250, 250))
+    val walkRightAnim: Animation = new Animation("data/images/player/player_run_right.png", 4, 24, 24)
+    val walkLeftAnim: Animation = new Animation("data/images/player/player_run_left.png", 4, 24, 24)
+    val idleRightAnim: Animation = new Animation("data/images/player/player_idle_right.png", 4, 24, 24)
+    val idleLeftAnim: Animation = new Animation("data/images/player/player_idle_left.png", 4, 24, 24)
+    val hitAnim: Animation = new Animation("data/images/player/player_hit.png", 1, 24, 24)
 
     player.animations.addOne("right", walkRightAnim)
     player.animations.addOne("left", walkLeftAnim)
-    player.animations.addOne("up", walkupAnim)
-    player.animations.addOne("down", walkdownAnim)
+    player.animations.addOne("idle_right", idleRightAnim)
+    player.animations.addOne("idle_left", idleLeftAnim)
+    player.animations.addOne("hit", hitAnim)
 
     player.currentAnimation = player.animations("right")
 
@@ -113,7 +116,7 @@ class Main extends PortableApplication(1920, 1080) {
 
     // move player
     player.move_fc(move_left,move_rigt,move_up,move_down)
-    player.move_controller(leftSickVal.x,leftSickVal.y)
+    player.move_controller(leftSickVal.x, leftSickVal.y)
 
     g.zoom(MapManager.zoom)
     MapManager.render(g)
@@ -138,16 +141,21 @@ class Main extends PortableApplication(1920, 1080) {
 
       // UI
       UIManager.upgradeLabel(g, player)
+      if(player.hp >= 5) g.setColor(Color.GREEN) else g.setColor(Color.RED)
+      g.drawString(g.getCamera.position.x - 240,g.getCamera.position.y + 130,s"HP: ${player.hp.toInt.toString}")
+
+      g.drawSchoolLogo()
+      g.drawFPS()
+
 
     } else {
       // LOSE SCREEN
       val pos = new Vector2(LevelManager.getCurrentLevel.currentRoom.width, LevelManager.getCurrentLevel.currentRoom.height)
       g.moveCamera(pos.x / 2, pos.y / 2, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
       g.drawPicture(pos.x / 2, pos.y / 2, imgBitmap)
+      MapManager.zoom = 0.5f
     }
 
-    g.drawSchoolLogo()
-    g.drawFPS()
   }
 
   // key

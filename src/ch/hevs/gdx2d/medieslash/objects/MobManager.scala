@@ -22,7 +22,7 @@ object MobManager {
       mobs(i) = new Mob(new Vector2(2000,2000))
     }
     for (i <- (l-archerMobs) until l) {
-      mobs(i) = new ArcherMob(new Vector2(2000,2000))
+      mobs(i) = new WarlockMob(new Vector2(2000,2000))
     }
   }
 

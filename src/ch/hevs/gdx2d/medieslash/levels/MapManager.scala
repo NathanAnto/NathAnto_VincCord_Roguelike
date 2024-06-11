@@ -13,7 +13,7 @@ object MapManager {
   var tiledMapRenderer: TiledMapRenderer = null
   var tiledLayer: TiledMapTileLayer = null
   var currentMap: TiledMap = null
-  var zoom: Float = .5f
+  var zoom: Float = .25f
 
   var doorLayers: mutable.HashMap[String, TiledMapTileLayer] = new mutable.HashMap[String, TiledMapTileLayer]
 

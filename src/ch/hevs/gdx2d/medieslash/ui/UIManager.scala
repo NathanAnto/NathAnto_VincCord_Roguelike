@@ -16,7 +16,7 @@ object UIManager {
       g.drawString(
         player.position.x- 50,
         player.position.y + (dt*10),
-        s"+${player.level.upgrade.amount} ${player.level.upgrade.uType}"
+        s"LEVEL UP"
       )
     }
   }

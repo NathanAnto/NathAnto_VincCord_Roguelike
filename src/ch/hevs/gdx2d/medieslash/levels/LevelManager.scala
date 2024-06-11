@@ -15,7 +15,7 @@ object LevelManager {
 
   // TODO: Make usable maps
   private var possibleRooms: Array[TiledMap] = Array(
-    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room1.tmx")
+    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room2.tmx")
   )
 
   def getCurrentLevel: Level = levels(currentLevelIndex)
