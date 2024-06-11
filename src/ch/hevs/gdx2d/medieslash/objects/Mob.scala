@@ -4,6 +4,7 @@ import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
 import ch.hevs.gdx2d.medieslash.levels.RoomManager
+import ch.hevs.gdx2d.medieslash.upgrades.XPManager
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Circle, Vector2}
@@ -112,6 +113,7 @@ class Mob(p: Vector2) extends Entity {
     hp -= dmg
     if (hp <= 0) {
       RoomManager.mobDied(this)
+      XPManager.gainedByMob(player, this)
     }
   }
 

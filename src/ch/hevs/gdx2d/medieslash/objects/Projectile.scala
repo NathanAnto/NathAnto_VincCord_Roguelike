@@ -67,7 +67,7 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
     angleTorwardsPlayer = toDegrees(atan2(target.position.y - position.y, target.position.x - position.x))
     xSpeed = (cos(toRadians(angleTorwardsPlayer)) * projSpeed).toInt
     ySpeed = (sin(toRadians(angleTorwardsPlayer)) * projSpeed).toInt
-    println(xSpeed, ySpeed)
+    // println(xSpeed, ySpeed)
   }
 
   override def draw(g: GdxGraphics): Unit = {

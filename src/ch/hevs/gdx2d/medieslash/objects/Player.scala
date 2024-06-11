@@ -4,6 +4,7 @@ import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
 import ch.hevs.gdx2d.medieslash.levels.{LevelManager, MapManager, RoomManager}
+import ch.hevs.gdx2d.medieslash.upgrades.{PlayerLevel, XPManager}
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.{Circle, Vector2}
 
@@ -21,6 +22,11 @@ class Player(p: Vector2) extends Entity {
   override var maxHp: Float = 20f
   override var hp: Float = maxHp
 
+  var level: PlayerLevel = new PlayerLevel(10, XPManager.getRandomUpgrade())
+  var gold: Int = 0;
+  var xp: Float = 0f;
+
+  var velocity: Vector2 = new Vector2(0,0)
   var attackSpeed: Float = 1f
   var tolerance: Double = 0.5
 
@@ -28,6 +34,12 @@ class Player(p: Vector2) extends Entity {
   damage = 1f
 
   def move_fc(left: Boolean, right: Boolean, up: Boolean, down: Boolean): Unit = {
+    val currentRoom = LevelManager.getCurrentLevel.currentRoom
+    if(position.x < colliderRadius) position.x += speed
+    if(position.x > currentRoom.width - colliderRadius) position.x -= speed
+    if(position.y > currentRoom.height - colliderRadius) position.y -= speed
+    if(position.y < colliderRadius) position.y += speed
+
     if(left && !right && !up && !down){
       position.x -= speed
       if (currentAnimation != animations("left")) {
@@ -64,6 +76,7 @@ class Player(p: Vector2) extends Entity {
     if(up && right){
       position.x += diagoSpeed
       position.y += diagoSpeed
+
       if (currentAnimation != animations("up")) {
         currentAnimation = animations("up")
       }
@@ -72,6 +85,7 @@ class Player(p: Vector2) extends Entity {
     if(down && left){
       position.x -= diagoSpeed
       position.y -= diagoSpeed
+
       if (currentAnimation != animations("down")) {
         currentAnimation = animations("down")
       }
@@ -80,6 +94,7 @@ class Player(p: Vector2) extends Entity {
     if(down && right){
       position.x += diagoSpeed
       position.y -= diagoSpeed
+
       if (currentAnimation != animations("down")) {
         currentAnimation = animations("down")
       }
@@ -87,7 +102,6 @@ class Player(p: Vector2) extends Entity {
   }
 
   def move_controller(x: Double,y: Double): Unit = {
-
     if (y > tolerance) {
       if (x > tolerance) {
         position.x += diagoSpeed
@@ -147,7 +161,7 @@ class Player(p: Vector2) extends Entity {
     super.draw(g)
 
     g.setColor(Color.BLUE)
-    g.drawFilledCircle(position.x, position.y, colliderRadius, Color.GREEN) // Draw collider
+//    g.drawFilledCircle(position.x, position.y, colliderRadius, Color.GREEN) // Draw collider
 
     g.draw(
       currentAnimation.playAnimation(),

@@ -88,7 +88,7 @@ object RoomManager {
   }
 
   def nextRoom(room: Room): Unit = {
-    println(s"Room: $room")
+//    println(s"Room: $room")
     LevelManager.getCurrentLevel.currentRoom = room
     MapManager.setNewMap(room.map)
   }

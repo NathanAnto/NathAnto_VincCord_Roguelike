@@ -6,7 +6,8 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 import ch.hevs.gdx2d.medieslash.effects.Animation
 import ch.hevs.gdx2d.medieslash.levels.MapManager.tiledLayer
 import ch.hevs.gdx2d.medieslash.levels.{Door, LevelManager, MapManager}
-import ch.hevs.gdx2d.medieslash.objects.{Entity, GameObject, Mob, MobManager, MobProjectile, Object, Player, PlayerProjectile, Projectile}
+import ch.hevs.gdx2d.medieslash.objects.{Entity, GameObject, Mob, MobManager, Object, Player, PlayerProjectile}
+import ch.hevs.gdx2d.medieslash.ui.UIManager
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.controllers.{Controller, Controllers}
 import com.badlogic.gdx.math.Vector2
@@ -93,8 +94,7 @@ class Main extends PortableApplication(1920, 1080) {
     g.clear()
     dt += Gdx.graphics.getDeltaTime
 
-    //player projectile
-//    proj_player.draw(g)
+    // player projectile
     proj_player.move_projectil(proj_move_left,proj_move_rigt,proj_move_up,proj_move_down)
     proj_move_left = move_left
     proj_move_rigt = move_rigt
@@ -132,13 +132,14 @@ class Main extends PortableApplication(1920, 1080) {
             }
           case e: Entity => e.draw(g)
           case o: Object => o.draw(g)
-          case door: Door =>
-            door.draw(g)
           case _ =>
         }
       }
-    } else {
 
+      // UI
+      UIManager.upgradeLabel(g, player)
+
+    } else {
       // LOSE SCREEN
       val pos = new Vector2(LevelManager.getCurrentLevel.currentRoom.width, LevelManager.getCurrentLevel.currentRoom.height)
       g.moveCamera(pos.x / 2, pos.y / 2, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
@@ -146,6 +147,7 @@ class Main extends PortableApplication(1920, 1080) {
     }
 
     g.drawSchoolLogo()
+    g.drawFPS()
   }
 
   // key
