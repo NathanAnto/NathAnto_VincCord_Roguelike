@@ -1,7 +1,7 @@
 package ch.hevs.gdx2d.medieslash
 
+import ch.hevs.gdx2d.components.audio.MusicPlayer
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
-import ch.hevs.gdx2d.components.screen_management.RenderingScreen
 import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.{GdxGraphics, ScreenManager}
 import ch.hevs.gdx2d.medieslash.effects.Animation
@@ -47,10 +47,10 @@ class Main extends PortableApplication(1920,1080) {
   var proj_move_rigt: Boolean = false
   var proj_move_up: Boolean = false
   var proj_move_down: Boolean = false
-  // information player
   // time start
   var start_time = System.currentTimeMillis()
-
+  // Music
+  var f: MusicPlayer = _
 
   override def onInit(): Unit = {
 
@@ -81,6 +81,9 @@ class Main extends PortableApplication(1920,1080) {
       ctrl = Controllers.getControllers.first
       println(s"Controllleer: $ctrl")
     }
+
+    // Load the MP3
+    f = new MusicPlayer("data/music/electroMedi.mp3")
 
     LevelManager.generateLevels(
       w = 3, h = 3,
@@ -147,7 +150,10 @@ class Main extends PortableApplication(1920,1080) {
       // UI
       UIManager.upgradeLabel(g, player)
       if(player.hp >= 5) g.setColor(Color.GREEN) else g.setColor(Color.RED)
-      g.drawString(g.getCamera.position.x - 240,g.getCamera.position.y + 130,s"HP: ${player.hp.toInt.toString}")
+      // HP and time
+      g.drawString(g.getCamera.position.x - 210,g.getCamera.position.y + 130,s"HP: ${player.hp.toInt.toString}")
+      g.setColor(Color.WHITE)
+      g.drawString(g.getCamera.position.x - 240,g.getCamera.position.y + 130,s"${(System.currentTimeMillis() - start_time) / 1000}")
 
       g.drawSchoolLogo()
       g.drawFPS()
@@ -157,8 +163,13 @@ class Main extends PortableApplication(1920,1080) {
       // LOSE SCREEN
       val pos = new Vector2(LevelManager.getCurrentLevel.currentRoom.width, LevelManager.getCurrentLevel.currentRoom.height)
       g.moveCamera(pos.x / 2, pos.y / 2, tiledLayer.getWidth * tiledLayer.getTileWidth, tiledLayer.getHeight * tiledLayer.getTileHeight)
-      g.drawPicture(pos.x / 2, pos.y / 2, imgBitmap)
+      g.drawPicture(pos.x / 2 - 250, pos.y / 2 - 100, imgBitmap)
       MapManager.zoom = 0.5f
+    }
+
+    // Music
+    if(!f.isPlaying){
+      f.loop()
     }
   }
 
