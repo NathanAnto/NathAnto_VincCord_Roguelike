@@ -1,7 +1,62 @@
-# Hello `gdx2d` for Scala !
+# MedieSlash made with `gdx2d` !
 
-Desktop bootstrap project based on the latest `gdx2d` library. The project is ready to use in _IntelliJ_. It uses the `gdx2d-desktop` library version `1.2.1`.
+[![TRAILER VIDEO](data/images/medieslash.png)](https://www.youtube.com/watch?v=QWHMrQHiLoE)
 
-The `gdx2d` sources are available in the library Jar file (in the `libs` folder). The Javadoc API of the library can be found [here](https://hevs-isi.github.io/gdx2d/javadoc/).
+[Trailer ^](https://www.youtube.com/watch?v=QWHMrQHiLoE)
 
-Java 11 or higher is required to run this project. An `Ant` build script is provided to export the project as a runnable Jar (available in the `dist` folder).
+
+# Introduciton
+MedieSlash is a Roguelike inspired by games like Brotato and The Binding of Isaac.
+
+The aim of the game is to rid all the dungeons of mobs. Explore
+the 5 randomly generated levels which contain more and more rooms
+to win the game.
+
+# How to play
+Move your player with the arrow keys to avoid the mobs and aim. 
+
+![player_movement.gif](data%2Fimages%2Fplayer_movement.gif)
+![arrowKeys.png](data/images/arrowKeys.png)
+
+# Features
+
+## Player
+
+The character you control. He constantly shoots fireballs in the direction he is walking. 
+
+![skeleton.gif](data/images/player/player.gif)
+
+[dungeonSprites_ by analogStudios_](https://analogstudios.itch.io/dungeonsprites)
+
+## Skeleton
+
+The skeleton mob will chase you around the room and attack you once he is close enough.
+
+![skeleton.gif](data/images/skeleton/skeleton.gif)
+
+[Skeleton Sprite Pack by Jesse Munguia](https://jesse-m.itch.io/skeleton-pack)
+
+## Warlock
+
+The warlock mob stay put and shoots fireballs at you.
+
+![warlock.gif](data/images/warlock/warlock.gif)
+
+[dungeonSprites_ by analogStudios_](https://analogstudios.itch.io/dungeonsprites)
+
+## Level Design
+
+The game is seperated into 5 levels, each level containing at least 4 rooms. The higher
+the level the more the rooms (+1 room per level).
+
+The levels are randomly generated to never have the same layout.
+
+![room1.png](data/images/room1.png)
+![room2.png](data/images/room2.png)
+
+
+Possible level 1 layout:
+
+![level_layout.png](data%2Fimages%2Flevel_layout.png)
+
+[16x16 Dungeon Tileset by 0x72](https://0x72.itch.io/16x16-dungeon-tileset)
