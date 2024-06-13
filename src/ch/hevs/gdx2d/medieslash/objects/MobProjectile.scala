@@ -12,11 +12,8 @@ class MobProjectile(mob: Mob, startPos: Vector2) extends Projectile(startPos) {
     if(playerHit) return
 
     if(getCollider(colliderRadius).overlaps(player.getCollider(player.colliderRadius))) {
-      // player hit
-      if(!playerHit) {
-        player.takeDamage(mob.damage)
-        playerHit = true
-      }
+      player.takeDamage(mob.damage)
+      playerHit = true
     }
 
     position.x += xSpeed

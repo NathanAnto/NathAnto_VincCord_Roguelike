@@ -1,6 +1,7 @@
 package ch.hevs.gdx2d.medieslash.levels
 
 import ch.hevs.gdx2d.medieslash.objects.MobManager
+import ch.hevs.gdx2d.medieslash.ui.UIManager
 import com.badlogic.gdx.maps.tiled.{TiledMap, TmxMapLoader}
 
 import scala.collection.mutable
@@ -10,11 +11,13 @@ import scala.util.Random
 object LevelManager {
 
   var levels: ArrayBuffer[Level] = ArrayBuffer()
+  var gameWon: Boolean = false
   private var currentLevelIndex: Int = 0
   private val MIN_ROOM_COUNT: Int = 4
 
   // TODO: Make usable maps
-  private var possibleRooms: Array[TiledMap] = Array(
+  private val possibleRooms: Array[TiledMap] = Array(
+    new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room1.tmx"),
     new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room2.tmx")
   )
 
@@ -22,8 +25,6 @@ object LevelManager {
 
   def startLevel(): Unit = {
     MapManager.setNewMap(getCurrentLevel.currentRoom.map)
-    println(s"Starting Level ${currentLevelIndex + 1}")
-    println(s"Rooms: ${getCurrentLevel.roomCount}")
   }
 
   /**
@@ -85,11 +86,6 @@ object LevelManager {
       nextRoom.setMap(
         possibleRooms(Random.between(0, possibleRooms.length))
       )
-
-      // Set last generated room to boss room
-      if (visited.size == roomCount) {
-        nextRoom.isBossRoom = true
-      }
     }
 
     // Find a neighbour that has already been visited
@@ -102,12 +98,13 @@ object LevelManager {
     }
   }
 
-  def levelFinished(): Unit = {
+  def isLevelFinished(): Unit = {
     if (getCurrentLevel.getRooms.count(r => r.roomCleared) == LevelManager.getCurrentLevel.roomCount) {
       currentLevelIndex += 1
       if(currentLevelIndex == levels.length) {
         println("GAME FINISHED")
         // TODO: End game
+        gameWon = true
         return
       }
       MobManager.upgradeMobs()
@@ -117,10 +114,6 @@ object LevelManager {
         d.active = true
       }
     }
-
-    //    if(levels(currentLevelIndex).bossDefeated) {
-    //      currentLevelIndex += 1
-    //    }
   }
 
   private def clamp(value: Int, min: Int, max: Int): Int = Math.max(min, Math.min(max, value))

@@ -28,21 +28,21 @@ object MapManager {
    * The number of cells over the given position.
    * @return The tile around the given position | null
    */
-  def getTile(position: Vector2, offsetX: Int, offsetY: Int) = try {
-    val x = (position.x / tiledLayer.getTileWidth).toInt + offsetX
-    val y = (position.y / tiledLayer.getTileHeight).toInt + offsetY
-    tiledLayer.getCell(x, y).getTile
-  } catch {
-    case e: Exception =>
-      null
-  }
-
-  def getTile(x: Int, y: Int) = try {
-    tiledLayer.getCell(x, y).getTile
-  } catch {
-    case e: Exception =>
-      null
-  }
+//  def getTile(position: Vector2, offsetX: Int, offsetY: Int) = try {
+//    val x = (position.x / tiledLayer.getTileWidth).toInt + offsetX
+//    val y = (position.y / tiledLayer.getTileHeight).toInt + offsetY
+//    tiledLayer.getCell(x, y).getTile
+//  } catch {
+//    case e: Exception =>
+//      null
+//  }
+//
+//  def getTile(x: Int, y: Int) = try {
+//    tiledLayer.getCell(x, y).getTile
+//  } catch {
+//    case e: Exception =>
+//      null
+//  }
 
   def tileToPosition(tileX: Int, tileY: Int): Vector2 = try {
     new Vector2(
@@ -52,19 +52,6 @@ object MapManager {
   } catch {
     case e: Exception =>
       null
-  }
-
-  /**
-   * Get the "walkable" property of the given tile.
-   *
-   * @param tile
-   * The tile to know the property
-   * @return true if the property is set to "true", false otherwise
-   */
-  def isWalkable(tile: TiledMapTile): Boolean = {
-    if (tile == null) return false
-    val test = tile.getProperties.get("walkable")
-    test.toString.toBoolean
   }
 
   /**
@@ -92,7 +79,6 @@ object MapManager {
     doorLayers.addOne("S", map.getLayers.get(2).asInstanceOf[TiledMapTileLayer])
     doorLayers.addOne("E", map.getLayers.get(3).asInstanceOf[TiledMapTileLayer])
     doorLayers.addOne("W", map.getLayers.get(4).asInstanceOf[TiledMapTileLayer])
-//    doorLayers.addOne("Boss", map.getLayers.get(5).asInstanceOf[TiledMapTileLayer])
 
     MobManager.resetMobs()
 

@@ -14,10 +14,7 @@ class PlayerProjectile(startPos: Vector2) extends Projectile(startPos) {
       val mob = m.asInstanceOf[Mob]
       if(LevelManager.getCurrentLevel.currentRoom.mobs.contains(mob)) {
         if(getCollider(colliderRadius).overlaps(mob.getCollider(mob.colliderRadius))) {
-          if(!targetsHit.contains(mob)) {
-            mob.takeDamage(player.damage)
-          }
-
+          mob.takeDamage(player.damage)
           targetsHit += mob
         }
       }

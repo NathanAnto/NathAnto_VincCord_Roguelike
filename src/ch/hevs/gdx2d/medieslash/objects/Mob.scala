@@ -17,7 +17,7 @@ class Mob(p: Vector2) extends Entity {
   override var animations: mutable.HashMap[String, Animation] = mutable.HashMap()
   override var currentAnimation: Animation = _
   override var speed: Float = 1f
-  override var diagoSpeed: Int = (speed * 2 * math.cos(math.Pi / 4)).toInt
+  override var diagoSpeed: Int = (speed * 1.5 * math.cos(math.Pi / 4)).toInt
   override var maxHp = 2
   override var hp = maxHp
   override var hitTimer: Float = 0f

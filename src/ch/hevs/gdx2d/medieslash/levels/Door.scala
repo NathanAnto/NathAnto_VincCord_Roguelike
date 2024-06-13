@@ -11,7 +11,7 @@ class Door(var room: Room) extends Object {
 
   var player: Player = GameObject.getObjectsByTag("player")(0).asInstanceOf[Player]
   var nextPlayerPos: Vector2 = _
-  private var colliderRadius = 20
+  private val colliderRadius = 20
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)

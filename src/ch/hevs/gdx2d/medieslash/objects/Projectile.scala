@@ -25,6 +25,7 @@ class Projectile(startPos: Vector2) extends Object with DrawableObject {
   var ySpeed: Int = 0
 
   val fireballAnim = new Animation("data/images/warlock/fireball.png", 60, 64/4, 64/4)
+  fireballAnim.FRAME_TIME = 0.05
 
   // fonction pour partir en fonction du player
   def move_projectil(left: Boolean, right: Boolean, up: Boolean, down: Boolean): Unit = {

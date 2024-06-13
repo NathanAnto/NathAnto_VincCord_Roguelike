@@ -10,7 +10,6 @@ class Level(val id: Int, val width: Int, val height: Int) {
 
   var frontiers: Set[Room] = Set()
   var roomCount: Int = 0
-  var bossDefeated: Boolean = false
 
   def createRooms(): Unit = {
     // Get all cells
@@ -22,8 +21,6 @@ class Level(val id: Int, val width: Int, val height: Int) {
   }
 
   def getRooms = rooms
-
-  def getTraversableRooms = rooms.filter(r => r.isTraversable)
 
   def getRoom(x: Int, y: Int): Room = {
     if (isInDimensions(x, y)) {

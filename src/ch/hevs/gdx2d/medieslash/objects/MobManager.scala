@@ -12,6 +12,7 @@ object MobManager {
 
   private val MAX_MOBS_PER_ROOM = 8
 
+  // Create and add all mobs in array
   def generateMobs(): Unit = {
     val l = mobs.length
 
@@ -26,6 +27,7 @@ object MobManager {
     }
   }
 
+  // Get mobs for current room
   def getMobs(): ArrayBuffer[Mob] = {
     val m: ArrayBuffer[Mob] = ArrayBuffer()
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
@@ -42,18 +44,17 @@ object MobManager {
       }
     }
 
-//    println(s"Mobs in room: ${numMobs}")
-
     m
   }
 
+  // Reset mob health after new room entered
   def resetMobs(): Unit = {
     for(mob <- mobs) {
       mob.hp = mob.maxHp
-//      println(mob)
     }
   }
 
+  // Upgrade mob stats for after each level
   def upgradeMobs(): Unit = {
     for(m <- mobs) {
       m.maxHp += 1

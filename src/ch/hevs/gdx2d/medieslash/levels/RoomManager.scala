@@ -5,6 +5,8 @@ import ch.hevs.gdx2d.medieslash.objects.{GameObject, Mob, MobManager}
 import com.badlogic.gdx.math.Vector2
 
 object RoomManager {
+
+  // Find current room doors on tilemap layers
   def getDoors(): Unit = {
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
 
@@ -25,7 +27,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("N")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(currentRoom.width/2, OFFSET) // OFFSET
+                door.nextPlayerPos = new Vector2(currentRoom.width/2, OFFSET)
               }
             }
           }
@@ -35,7 +37,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("S")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(currentRoom.width/2, currentRoom.height - OFFSET) // currentRoom.height - OFFSET
+                door.nextPlayerPos = new Vector2(currentRoom.width/2, currentRoom.height - OFFSET)
               }
             }
           }
@@ -45,7 +47,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("E")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(OFFSET, currentRoom.height/2) // OFFSET
+                door.nextPlayerPos = new Vector2(OFFSET, currentRoom.height/2)
               }
             }
           }
@@ -55,7 +57,7 @@ object RoomManager {
               if (neighbour.isTraversable) {
                 val door = currentRoom.doors("W")
                 door.position = pos
-                door.nextPlayerPos = new Vector2(currentRoom.width - OFFSET, currentRoom.height/2) // currentRoom.width - OFFSET
+                door.nextPlayerPos = new Vector2(currentRoom.width - OFFSET, currentRoom.height/2)
               }
             }
           }
@@ -68,27 +70,29 @@ object RoomManager {
     }
   }
 
+  // When a mob dies in the room
   def mobDied(mob: Mob): Unit = {
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
     currentRoom.mobs -= mob
     if(currentRoom.mobs.isEmpty) {
       currentRoom.roomCleared = true
 
-      LevelManager.levelFinished()
+      LevelManager.isLevelFinished()
     }
   }
 
+  // To remove door collision
   def removeRoomDoors(): Unit = {
     val currentRoom = LevelManager.getCurrentLevel.currentRoom
     val trash_pos = new Vector2(2000,2000)
-    // Remove doors from room before
-    for((s, d) <- currentRoom.doors) {
+
+    for((key, d) <- currentRoom.doors) {
       d.position = trash_pos
     }
   }
 
+  // Load next room map and contents
   def nextRoom(room: Room): Unit = {
-//    println(s"Room: $room")
     LevelManager.getCurrentLevel.currentRoom = room
     MapManager.setNewMap(room.map)
   }

@@ -20,7 +20,6 @@ class Room(val x: Int, val y: Int) {
 
   var isTraversable: Boolean = false
   var roomCleared: Boolean = false
-  var isBossRoom: Boolean = false
 
   override def toString: String = s"Room($x,$y) [$isTraversable]"
 

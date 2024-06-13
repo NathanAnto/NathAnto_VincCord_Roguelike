@@ -18,8 +18,7 @@ class WarlockMob(pos: Vector2) extends Mob(pos) {
   animations = mutable.HashMap()
 
   val idleRightAnim: Animation = new Animation("data/images/warlock/warlock_idle_right.png", 4, 24, 24)
-  val idleLeftAnim: Animation = new Animation("data/images/warlock" +
-    "/warlock_idle_left.png", 4, 24, 24)
+  val idleLeftAnim: Animation = new Animation("data/images/warlock/warlock_idle_left.png", 4, 24, 24)
 
   animations.addOne("idle_right", idleRightAnim)
   animations.addOne("idle_left", idleLeftAnim)
@@ -40,7 +39,6 @@ class WarlockMob(pos: Vector2) extends Mob(pos) {
     if(hp <= 0) return
 
     hitTimer += Gdx.graphics.getDeltaTime
-
 
     if(hitTimer >= projectileRespawn) {
       hitTimer = 0
