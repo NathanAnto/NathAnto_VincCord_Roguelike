@@ -15,16 +15,13 @@ object XPManager {
     (UpgradeType.HEAL, new Upgrade(UpgradeType.HEAL, 5f))
   )
 
+
   def gainedByMob(player: Player, mob: Mob) = {
     var xp = mob.maxHp + mob.damage
     player.xp += xp
-    player.gold += LevelManager.getCurrentLevel.id
-
-    println(s"XP: ${player.xp}")
 
     if (player.xp > player.level.nextLevelXp) {
       val nextLevelXp = (player.level.nextLevelXp * 1.5).toInt
-      println(s"LEVEL UP")
 
       UIManager.dt = 0
 
@@ -35,7 +32,7 @@ object XPManager {
 
   def getRandomUpgrade(): String = {
     val values = upgrades.values.toArray
-    return values(Random.nextInt(values.length)).uType
+    values(Random.nextInt(values.length)).uType
   }
 
   def upgradePlayer(player: Player, upgrade: Upgrade): Unit = {
@@ -62,10 +59,5 @@ object XPManager {
         }
       }
     }
-//    println("STATS:")
-//    println(player.maxHp)
-//    println(player.hp)
-//    println(player.damage)
-//    println(player.attackSpeed)
   }
 }

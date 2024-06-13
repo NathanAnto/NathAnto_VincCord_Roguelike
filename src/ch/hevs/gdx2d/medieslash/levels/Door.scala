@@ -17,7 +17,6 @@ class Door(var room: Room) extends Object {
     super.draw(g)
 
     if (getCollider(colliderRadius).overlaps(player.getCollider(player.colliderRadius)) && active) {
-      println(s"collided door $this")
       RoomManager.removeRoomDoors()
       player.position = nextPlayerPos
       RoomManager.nextRoom(this.room)

@@ -37,7 +37,6 @@ class Room(val x: Int, val y: Int) {
 
   def createDoors(n: Room, level: Level): Unit = {
     if(!n.isTraversable) return
-//    println(s"Creating door from $this to $n")
     if (n == level.getRoom(x, y - 1)) // North room
       doors("N") = new Door(n)
     if (n == level.getRoom(x, y + 1)) // South room

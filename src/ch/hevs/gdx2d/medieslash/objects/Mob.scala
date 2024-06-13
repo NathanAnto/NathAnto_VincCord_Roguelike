@@ -162,8 +162,6 @@ class Mob(p: Vector2) extends Entity {
     hitTimer += Gdx.graphics.getDeltaTime
 
     if(hitTimer > attackSpeed) {
-      // TODO: Attack animation
-      println("Player hit")
       hitTimer = 0
       player.takeDamage(damage)
     }

@@ -23,7 +23,6 @@ class Player(p: Vector2) extends Entity {
   override var hp: Float = maxHp
 
   var level: PlayerLevel = new PlayerLevel(10, XPManager.getRandomUpgrade())
-  var gold: Int = 0;
   var xp: Float = 0f;
 
   var previousAnimation: Animation = currentAnimation
@@ -157,7 +156,6 @@ class Player(p: Vector2) extends Entity {
     super.draw(g)
 
     if(currentAnimation == animations("hit")) {
-      println("HIT DONE")
       currentAnimation = previousAnimation
     }
 

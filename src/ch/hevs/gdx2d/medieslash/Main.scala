@@ -79,7 +79,6 @@ class Main extends PortableApplication(1920,1080) {
     // Controller
     if (Controllers.getControllers.size > 0) {
       ctrl = Controllers.getControllers.first
-      println(s"Controllleer: $ctrl")
     }
 
     // Load the MP3

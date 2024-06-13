@@ -102,8 +102,6 @@ object LevelManager {
     if (getCurrentLevel.getRooms.count(r => r.roomCleared) == LevelManager.getCurrentLevel.roomCount) {
       currentLevelIndex += 1
       if(currentLevelIndex == levels.length) {
-        println("GAME FINISHED")
-        // TODO: End game
         gameWon = true
         return
       }
