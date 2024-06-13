@@ -15,7 +15,6 @@ object LevelManager {
   private var currentLevelIndex: Int = 0
   private val MIN_ROOM_COUNT: Int = 4
 
-  // TODO: Make usable maps
   private val possibleRooms: Array[TiledMap] = Array(
     new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room1.tmx"),
     new TmxMapLoader().load("src/ch/hevs/gdx2d/medieslash/maps/room2.tmx")
@@ -90,7 +89,6 @@ object LevelManager {
 
     // Find a neighbour that has already been visited
     for (n <- nextRoom.neighbours) {
-
       if (visited.contains(n)) {
         primsFrontier(nextRoom, visited, level, roomCount)
         return
